@@ -181,9 +181,9 @@ class ItemsController extends Controller
      * @param  \App\Items  $items
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Items $items, ItemsCats $itemsCats, Cats $cats)
+    public function update(Request $request, Items $items)
     {
-    $catsArr = $request->selectedCatsArr;
+
         $uniqueTitleValidation = '';
         if (trim(strtolower($request->title_old)) != trim(strtolower($request->title))) {
             $uniqueTitleValidation = '|unique:items';
@@ -193,6 +193,7 @@ class ItemsController extends Controller
             'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/'
         ]);
         $items->title = $request->title;
+        $itemsId = $request->input('items_id');
         $items->description = $request->description;
         $items->update();
         $page = $request->input('on_page');
@@ -200,6 +201,21 @@ class ItemsController extends Controller
             $arr = array();
         } else {
             $arr = ['page' => $page];
+        }
+
+        // update categories
+        $request->validate([
+            'catsArr.*.' => 'nullable|integer'
+        ]);
+        $catsArr = $request->catsArr;
+        
+        if (is_array($catsArr) && count($catsArr)) {
+            // Delete existing cats for item
+            DB::delete("DELETE FROM items_cats WHERE items_id = $itemsId");
+            // add submitted cats
+            foreach($catsArr as $catsId) {
+                Db::insert("INSERT INTO items_cats (items_id, cats_id) VALUES (?, ?)", [$itemsId, $catsId]);
+            }
         }
 
         return redirect()->route('items.index', $arr);

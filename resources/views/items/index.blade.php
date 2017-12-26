@@ -80,6 +80,7 @@
         @foreach( $itemsColl as $item )
             <form class='catRow' id="form_{{ $item->id }}" action="{{ route('items.update', $item) }}" method="post">
             <input type="hidden" name="on_page" value="{{$itemsColl->currentPage()}}">
+            <input type="hidden" name="items_id" value="{{ $item->id }}">
             {{ csrf_field() }}
             <div class='tr'>
                 <div class='td'>
@@ -148,6 +149,7 @@ var catsArr = @php echo json_encode($catsArr); @endphp;
 // selected arr  keys: [items_id][cats_id] = items_cats.id
 var itemsCatsArr = @php echo json_encode($itemsCatsArr); @endphp;
 
+if (0) {
 $(document).ready(function() {
 
     // run first time page loads. builds category dds
@@ -240,7 +242,7 @@ $(document).ready(function() {
 
 
 });
-
+}
 
 </script>
 
