@@ -10,7 +10,6 @@
 
         <title>@if (trim($__env->yieldContent('template_title')))@yield('template_title') | @endif {{ config('app.name', Lang::get('titles.app')) }}</title>
         <meta name="description" content="">
-        <meta name="author" content="Jeremy Kenedy">
         <link rel="shortcut icon" href="/favicon.ico">
 
         {{-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --}}
@@ -24,6 +23,13 @@
 
         {{-- Styles --}}
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+
+        <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+        @if (App::environment('local'))
+            @include('layouts.partials.adminheader-scripts-dev')
+        @else
+            @include('layouts.partials.adminheader-scripts')
+        @endif
 
         @yield('template_linked_css')
 
@@ -70,7 +76,7 @@
 
         {{-- Scripts --}}
         <script src="{{ mix('/js/app.js') }}"></script>
-        {!! HTML::script('//maps.googleapis.com/maps/api/js?key='.env("GOOGLEMAPS_API_KEY").'&libraries=places&dummy=.js', array('type' => 'text/javascript')) !!}
+        {{--{!! HTML::script('//maps.googleapis.com/maps/api/js?key='.env("GOOGLEMAPS_API_KEY").'&libraries=places&dummy=.js', array('type' => 'text/javascript')) !!}--}}
 
         @yield('footer_scripts')
 

@@ -1,0 +1,12 @@
+#tablegrid td{padding:4px;}
+.sectionTitle{
+    float:left;
+}
+.sectionForm {
+    float:left;
+    padding-left:20px;
+    margin-top:20px;
+}
+.tdTitle {
+    font-weight:bold;
+}
