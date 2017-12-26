@@ -53,7 +53,7 @@
 
     echo '<ul style="padding-left:20px;margin-top:20px;" class="nav nav-pills">';
 
-    echo '<li class="nav-item" style="margin-top:10px;font-weight:bold;">Sort:</li>';
+    echo '<li class="nav-item" style="margin-left:10px;margin-top:10px;font-weight:bold;">Sort:</li>';
 
     echo '<li class="nav-item">';
     echo '<a class="nav-link ' . $descActive . '" href="/items?sort=desc' . $searchQStr . '">Alpha Desc</a>';
@@ -78,7 +78,7 @@
     <div style="clear:both;"></div>
     <div id='categoryTable'>
         @foreach( $itemsColl as $item )
-            <form id="form_{{ $item->id }}" action="{{ route('items.update', $item) }}" method="post">
+            <form class='catRow' id="form_{{ $item->id }}" action="{{ route('items.update', $item) }}" method="post">
             <input type="hidden" name="on_page" value="{{$itemsColl->currentPage()}}">
             {{ csrf_field() }}
             <div class='tr'>
@@ -97,6 +97,7 @@
 
                 </div>
             </div>
+            <div style='clear:both;'></div>
             <div class='tr'>
                 <div class='td'  id='addCatsCheckboxes_{{ $item->id }}'>
                     @include('layouts.partials.catscheckboxes', [
@@ -107,15 +108,13 @@
                     ])
                 </div>
             </div>
-
-
-            <hr>
-
-
+            <div style='clear:both;'></div>
             </form>
+            <div style='clear:both;'></div>
+            <hr>
         @endforeach
-    </table>
-
+    </div>
+    <div style='clear:both;'></div>
     {!! $itemsColl->appends(['sort' => $sort, 'search' => $search])->render() !!}
 
 {{--<pre>--}}

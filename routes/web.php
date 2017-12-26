@@ -144,7 +144,7 @@ Route::get('/items/create', 'ItemsController@create')->name('items.create');
 Route::post('/items', 'ItemsController@store')->name('items.store');
 Route::get('/items/{items}/edit', 'ItemsController@edit')->name('items.edit');
 
-Route::post('/items/{items}{itemscats?}{cats?}/update', 'ItemsController@update')->name('items.update');
+Route::post('/items/{items}/update', 'ItemsController@update')->name('items.update');
 
 Route::get('/items/{items}', 'ItemsController@destroy')->name('items.delete');
 Route::post('/items/updateitemcat', 'ItemsController@updateItemCat');

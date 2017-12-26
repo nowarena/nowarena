@@ -25,6 +25,7 @@
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         @if (App::environment('local'))
             @include('layouts.partials.adminheader-scripts-dev')
         @else
