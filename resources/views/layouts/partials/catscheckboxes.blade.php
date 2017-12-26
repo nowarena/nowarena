@@ -5,7 +5,8 @@ foreach($catsArr as $catsId => $title) {
     if (!empty($itemsCatsArr[$itemsId][$catsId])) {
         echo " checked";
     }
-    echo "> | ";
+    echo "> |<br> ";
+    // include subcategories if category has them
 }
 
 @endphp
