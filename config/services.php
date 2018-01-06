@@ -40,6 +40,11 @@ return [
         'client_secret' => env('FB_SECRET'),
         'redirect'      => env('FB_REDIRECT'),
     ],
+    'instagram' => [
+        'client_id'     => env('INSTAGRAM_KEY'),
+        'client_secret' => env('INSTAGRAM_SECRET'),
+        'redirect'      => env('INSTAGRAM_REDIRECT_URI'),
+    ]
 //
 //    'twitter' => [
 //        'client_id'     => env('TW_ID'),
@@ -71,11 +76,7 @@ return [
 //        'redirect'      => env('TWITCH_REDIRECT_URI'),
 //    ],
 //
-//    'instagram' => [
-//        'client_id'     => env('INSTAGRAM_KEY'),
-//        'client_secret' => env('INSTAGRAM_SECRET'),
-//        'redirect'      => env('INSTAGRAM_REDIRECT_URI'),
-//    ],
+
 //
 //    '37signals' => [
 //        'client_id'     => env('37SIGNALS_KEY'),

@@ -18,6 +18,7 @@
         <div class="sectionForm">
         <input type="text" size="30" name="title" placeholder="Title">
         <input type="text" size="60" name="description" placeholder="Description">
+        Parent Only:<input type="checkbox" name="parent_only" value="1">
         <input class="btn btn-primary" type="submit" value="Add Category">
         </div>
 
@@ -36,6 +37,7 @@
     </form>
 
     @php
+
 
     // SORT EDIT CATS LINKS
     $searchQStr = '';
@@ -56,7 +58,7 @@
         $descActive = 'activeLink';
     }
 
-    echo '<ul style="padding-left:20px;margin-top:20px;" class="nav nav-pills">';
+    echo '<ul style="float:left;padding-left:20px;margin-top:20px;" class="nav nav-pills">';
 
     echo '<li class="nav-item" style="margin-top:10px;font-weight:bold;">Sort:</li>';
 
@@ -82,38 +84,79 @@
 
     <div style="clear:both;"></div>
 
+    <div style='background-color:#ffffff;float:right;border:1px solid black;position:absolute;z-index:2;top:60px;right:50px;'>
+            @include('layouts.partials.catshierarchy', [
+                'parentChildArr' => $parentChildArr,
+                'catsColl' => $catsColl,
+                'parentChildFlattenedArr' => $parentChildFlattenedArr
+            ])
+    </div>
+
     <!-- EDIT CATS FORM LIST-->
     <table border="0" cellpadding="4" cellspacing="4">
-        @foreach( $cats as $task )
-            <form action="{{ route('cats.update', $task) }}" method="post">
-            <input type="hidden" name="on_page" value="{{$cats->currentPage()}}">
+        @foreach( $catsPaginator as $cat )
+            <form action="{{ route('cats.update', $cat) }}" method="post">
+            <input type="hidden" name="on_page" value="{{$catsPaginator->currentPage()}}">
+            <input type="hidden" name="parent_cats_id" value="{{$cat->id}}">
             {{ csrf_field() }}
             <tr>
                 <td>
-                    <input type="text" size="30" name="title" value="{{ $task->title }}">
-                    <input type="hidden" size="30" name="title_old" value="{{ $task->title }}">
+                    <input type="text" size="30" name="title" value="{{ $cat->title }}">
+                    <input type="hidden" size="30" name="title_old" value="{{ $cat->title }}">
                 </td>
                 <td>
-                    <input type="text" size="60" name="description" value="{{ $task->description }}">
+                    <input type="text" size="60" name="description" value="{{ $cat->description }}">
+                </td>
+                <td>
+                Parent Only: <input type='checkbox' name='parent_only' value='1'
+                @foreach( $parentChildHierArr as $key => $arr )
+                    @if ($arr['child_id'] == $cat->id)
+                         checked
+                         break
+                    @endif
+                @endforeach
+                >
                 </td>
                 <td>
                     <button class="btn btn-primary" name="edit">Submit Edit</button>
                 </td>
                 <td>
-                    <a class="btn btn-danger" href="{{ route('cats.delete', $task )}}" onclick="return confirm('Really delete?');">Delete</a>
+                    <a class="btn btn-danger" href="{{ route('cats.delete', $cat )}}" onclick="return confirm('Really delete?');">Delete</a>
 
                 </td>
             </tr>
+                <tr>
+                <td>
+                    @include('layouts.partials.child_cats_dd', [
+                        'catsColl' => $catsColl,
+                        'selectedId' => 0,
+                        'currentId' => $cat->id,
+                        'parentChildArr' => $parentChildArr,
+                        'parentChildHierArr' => $parentChildHierArr
+                    ])
+                </td>
+                <td colspan="4">
+                    @if (!empty($parentChildArr[$cat->id]))
+                        @include('layouts.partials.child_cats_ckboxes', [
+                            'parentChildArr' => $parentChildArr,
+                            'catsColl' => $catsColl,
+                            'currentId' => $cat->id
+                        ])
+                    @endif
+                </td></tr>
+                <tr><td colspan='5'><hr></td></tr>
+
+
             </form>
         @endforeach
     </table>
 
     <!-- PAGINATION-->
-    {!! $cats->appends(['sort' => $sort, 'search' => $search])->render() !!}
+    {!! $catsPaginator->appends(['sort' => $sort, 'search' => $search])->render() !!}
 
 @php
 echo "<pre>";
-
+print_r($parentChildHierArr);
 print_r(DB::getQueryLog());
 print_r([$sort, $search]);
 echo "</pre>";

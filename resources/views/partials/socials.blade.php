@@ -25,11 +25,11 @@
     {{--</div>--}}
 {{--</div>--}}
 
-{{--<div class="row">--}}
-    {{--<div class="col-xs-6 margin-bottom-1">--}}
-        {{--{!! HTML::icon_link(route('social.redirect',['provider' => 'instagram']), 'fa fa-instagram', 'Instagram', array('class' => 'btn btn-block btn-social btn-instagram')) !!}--}}
-    {{--</div>--}}
+<div class="row">
+    <div class="col-xs-6 margin-bottom-1">
+        {!! HTML::icon_link(route('social.redirect',['provider' => 'instagram']), 'fa fa-instagram', 'Instagram', array('class' => 'btn btn-block btn-social btn-instagram')) !!}
+    </div>
     {{--<div class="col-xs-6 margin-bottom-1">--}}
         {{--{!! HTML::icon_link(route('social.redirect',['provider' => '37signals']), 'fa fa-signal', 'Basecamp', array('class' => 'btn btn-block btn-social btn-basecamp')) !!}--}}
     {{--</div>--}}
-{{--</div>--}}
+</div>

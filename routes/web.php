@@ -123,12 +123,12 @@ Route::group(['middleware' => ['auth', 'activated', 'role:admin', 'activity']], 
 
 //exit($_SERVER['REQUEST_URI']);
 // Tasks
-Route::get('/tasks','TasksController@index')->name('tasks.index');
-Route::get('/tasks/create', 'TasksController@create')->name('tasks.create');
-Route::post('/tasks', 'TasksController@store')->name('tasks.store');
-Route::get('/tasks/{task}/edit', 'TasksController@edit')->name('tasks.edit');
-Route::post('/tasks/{task}/update', 'TasksController@update')->name('tasks.update');
-Route::get('/tasks/{task}', 'TasksController@destroy')->name('tasks.delete');
+//Route::get('/tasks','TasksController@index')->name('tasks.index');
+//Route::get('/tasks/create', 'TasksController@create')->name('tasks.create');
+//Route::post('/tasks', 'TasksController@store')->name('tasks.store');
+//Route::get('/tasks/{task}/edit', 'TasksController@edit')->name('tasks.edit');
+//Route::post('/tasks/{task}/update', 'TasksController@update')->name('tasks.update');
+//Route::get('/tasks/{task}', 'TasksController@destroy')->name('tasks.delete');
 
 // category editor
 Route::get('/cats','CatsController@index')->name('cats.index');
@@ -143,8 +143,15 @@ Route::get('/items','ItemsController@index')->name('items.index');
 Route::get('/items/create', 'ItemsController@create')->name('items.create');
 Route::post('/items', 'ItemsController@store')->name('items.store');
 Route::get('/items/{items}/edit', 'ItemsController@edit')->name('items.edit');
-
 Route::post('/items/{items}/update', 'ItemsController@update')->name('items.update');
-
 Route::get('/items/{items}', 'ItemsController@destroy')->name('items.delete');
 Route::post('/items/updateitemcat', 'ItemsController@updateItemCat');
+
+// links
+Route::get('/links','LinksController@index')->name('links.index');
+Route::get('/links/create', 'LinksController@create')->name('links.create');
+Route::post('/links', 'LinksController@store')->name('links.store');
+Route::get('/links/{links}/edit', 'LinksController@edit')->name('links.edit');
+Route::post('/links/{links}/update', 'LinksController@update')->name('links.update');
+Route::get('/links/{links}', 'LinksController@destroy')->name('links.delete');
+

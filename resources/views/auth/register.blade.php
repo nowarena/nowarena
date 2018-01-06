@@ -94,9 +94,9 @@
                             {{--</div>--}}
                         {{--</div>--}}
 
-                        <p class="text-center margin-bottom-2">
-                            Use Facebook (only) to Register
-                        </p>
+                        {{--<p class="text-center margin-bottom-2">--}}
+                            {{--Use Facebook (only) to Register--}}
+                        {{--</p>--}}
 
                         @include('partials.socials')
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCatsTable extends Migration
+class CatsPAndC extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCatsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cats', function (Blueprint $table) {
-            $table->increments('id');
-            //$table->integer('parent_id')->nullable();
-            $table->string('title')->unique();
-            $table->text('description')->nullable();
+        Schema::create('cats_p_and_c', function (Blueprint $table) {
+            //$table->increments('id');
+            $table->integer('parent_id');
+            $table->integer('child_id');
             $table->timestamps();
+            $table->unique(array('parent_id', 'child_id'));
         });
     }
 
@@ -29,6 +29,6 @@ class CreateCatsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cats');
+        Schema::dropIfExists('cats_p_and_c');
     }
 }

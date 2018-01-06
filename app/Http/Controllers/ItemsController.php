@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 use Auth;
 
 use Input;
-use App\Items;
-use App\ItemsCats;
-use App\Cats;
+use App\Models\Items;
+use App\Models\ItemsCats;
+use App\Models\Cats;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
