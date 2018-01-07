@@ -21,7 +21,7 @@ class CreateItemsCatsTable extends Migration
             $table->integer('items_id');
 //            $table->foreign('items_id')
 //                ->references('id')->on('items');
-            $table->integer('parent_id');
+            //$table->integer('parent_id');
             $table->timestamps();
             $table->unique(array('cats_id', 'items_id'));
         });

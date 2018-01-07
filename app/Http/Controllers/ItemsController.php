@@ -6,6 +6,7 @@ use Auth;
 use Input;
 use App\Models\Items;
 use App\Models\ItemsCats;
+use App\Models\CatsPandC;
 use App\Models\Cats;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -85,6 +86,7 @@ class ItemsController extends Controller
         foreach ($itemsColl as $item) {
             $itemsIdArr[] = $item->id;
         }
+
         $itemsCatsColl = array();
         if (count($itemsIdArr)) {
             $itemsCatsColl = DB::table('items_cats')
@@ -94,6 +96,7 @@ class ItemsController extends Controller
         // Build lookup table of items_id that points to related cats_ids for that items_id
         $itemsCatsArr = array();
         $itemsArr = [];
+        /*
         foreach($itemsColl as $itemsObj) {
             $hasCats = false;
             foreach($itemsCatsColl as $itemsCatsObj) {
@@ -108,21 +111,29 @@ class ItemsController extends Controller
             }
             $itemsArr[$itemsObj->id] = $itemsObj->title;
         }
+*/
 
+        //$cats = new Cats();
+        $catsArr = DB::table('cats')->select()->pluck('title', 'id');
+//        print_r($catsArr);exit;
+//        $newCatsArr = [];
+//        foreach($catsArr as $i => $obj) {
+//            $newCatsArr[$obj->id] = $obj->title;
+//        }
+//        $catsArr = $newCatsArr;
 
-        $cats = new Cats();
-        $catsArr = $cats->get();
-        $newCatsArr = [];
-        foreach($catsArr as $i => $obj) {
-            $newCatsArr[$obj->id] = $obj->title;
-        }
-        $catsArr = $newCatsArr;
+        $catsPandCObj = new CatsPandC();
+        $catsObj = new Cats();
+        $catsColl = $catsObj->pluck('title', 'id')->all();
+        //$parentChildArr = $catsPandCObj->getParentChildArr();
+        $parentChildFlattenedArr = $catsPandCObj->flattenHier($catsColl);
+        $parentChildHierArr = $catsPandCObj->getHierarchy();
 
 
 
         return view(
             'items.index',
-            compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl')
+            compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl', 'parentChildHierArr', 'parentChildFlattenedArr', 'catsColl')
         );
     }
 
@@ -158,10 +169,7 @@ class ItemsController extends Controller
      * @param  \App\Items  $items
      * @return \Illuminate\Http\Response
      */
-    public function show(Items $items)
-    {
-        //
-    }
+    public function show(Items $items) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -205,16 +213,16 @@ class ItemsController extends Controller
 
         // update categories
         $request->validate([
-            'catsArr.*.' => 'nullable|integer'
+            'catsIdArr.*' => 'nullable|integer'
         ]);
-        $catsArr = $request->catsArr;
-        
-        if (is_array($catsArr) && count($catsArr)) {
-            // Delete existing cats for item
-            DB::delete("DELETE FROM items_cats WHERE items_id = $itemsId");
+        $catsIdArr = $request->catsIdArr;
+
+        // Delete existing cats for item
+        DB::delete("DELETE FROM items_cats WHERE items_id = $itemsId");
+        if (is_array($catsIdArr) && count($catsIdArr)) {
             // add submitted cats
-            foreach($catsArr as $catsId) {
-                Db::insert("INSERT INTO items_cats (items_id, cats_id) VALUES (?, ?)", [$itemsId, $catsId]);
+            foreach($catsIdArr as $catsId) {
+                Db::insert("INSERT INTO items_cats (items_id, cats_id, created_at, updated_at) VALUES (?, ?, NOW(), NOW())", [$itemsId, $catsId]);
             }
         }
 

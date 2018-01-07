@@ -127,6 +127,9 @@
             </tr>
                 <tr>
                 <td>
+                    @php
+
+                    @endphp
                     @include('layouts.partials.child_cats_dd', [
                         'catsColl' => $catsColl,
                         'selectedId' => 0,

@@ -33,45 +33,47 @@
 
     @php
 
-    $searchQStr = '';
-    if (!empty($search)) {
-        $searchQStr = "&search=" . urlencode($search);
-    }
-    $ascActive = '';
-    $descActive = '';
-    $newActive = '';
-    $oldActive = '';
-    if ($sort == 'asc') {
-        $ascActive = 'activeLink';
-    } elseif ($sort == 'old') {
-        $oldActive = 'activeLink';
-    } elseif ($sort == 'new') {
-        $newActive = 'activeLink';
-    } else {
-        $descActive = 'activeLink';
-    }
 
-    echo '<ul style="padding-left:20px;margin-top:20px;" class="nav nav-pills">';
 
-    echo '<li class="nav-item" style="margin-left:10px;margin-top:10px;font-weight:bold;">Sort:</li>';
+        $searchQStr = '';
+        if (!empty($search)) {
+            $searchQStr = "&search=" . urlencode($search);
+        }
+        $ascActive = '';
+        $descActive = '';
+        $newActive = '';
+        $oldActive = '';
+        if ($sort == 'asc') {
+            $ascActive = 'activeLink';
+        } elseif ($sort == 'old') {
+            $oldActive = 'activeLink';
+        } elseif ($sort == 'new') {
+            $newActive = 'activeLink';
+        } else {
+            $descActive = 'activeLink';
+        }
 
-    echo '<li class="nav-item">';
-    echo '<a class="nav-link ' . $descActive . '" href="/items?sort=desc' . $searchQStr . '">Alpha Desc</a>';
-    echo '</li>';
+        echo '<ul style="padding-left:20px;margin-top:20px;" class="nav nav-pills">';
 
-    echo '<li class="nav-item">';
-    echo '<a class="nav-link ' . $ascActive . '" href="/items?sort=asc' . $searchQStr . '">Alpha Asc</a>';
-    echo '</li>';
+        echo '<li class="nav-item" style="margin-left:10px;margin-top:10px;font-weight:bold;">Sort:</li>';
 
-    echo '<li class="nav-item">';
-    echo '<a class="nav-link ' . $newActive . '" href="/items?sort=new' . $searchQStr . '">Newest First</a>';
-    echo '</li>';
+        echo '<li class="nav-item">';
+        echo '<a class="nav-link ' . $descActive . '" href="/items?sort=desc' . $searchQStr . '">Alpha Desc</a>';
+        echo '</li>';
 
-    echo '<li class="nav-item">';
-    echo '<a class="nav-link ' . $oldActive . '" href="/items?sort=old' . $searchQStr . '">Oldest First</a>';
-    echo '</li>';
+        echo '<li class="nav-item">';
+        echo '<a class="nav-link ' . $ascActive . '" href="/items?sort=asc' . $searchQStr . '">Alpha Asc</a>';
+        echo '</li>';
 
-    echo '</ul>';
+        echo '<li class="nav-item">';
+        echo '<a class="nav-link ' . $newActive . '" href="/items?sort=new' . $searchQStr . '">Newest First</a>';
+        echo '</li>';
+
+        echo '<li class="nav-item">';
+        echo '<a class="nav-link ' . $oldActive . '" href="/items?sort=old' . $searchQStr . '">Oldest First</a>';
+        echo '</li>';
+
+        echo '</ul>';
 
     @endphp
 
@@ -101,12 +103,22 @@
             <div style='clear:both;'></div>
             <div class='tr'>
                 <div class='td'  id='addCatsCheckboxes_{{ $item->id }}'>
-                    @include('layouts.partials.catscheckboxes', [
-                        'catsArr' => $catsArr,
-                        'itemsId' => $item->id,
-                        'selectedCatsId' => 0,
-                        'itemsCatsArr' => $itemsCatsArr
-                    ])
+
+                    @php
+                    // first cat is single, top level (eg. 'NFL') which should be apparent, displaying top level
+                    // would be clutter
+                    foreach($parentChildFlattenedArr as $id => $arr ) {
+                        displayItemsCatsCkBoxes($arr, '', $catsColl, $itemsCatsColl, $item->id);
+                    }
+
+                    @endphp
+
+                    {{--@include('layouts.partials.catscheckboxes', [--}}
+                        {{--'catsArr' => $catsArr,--}}
+                        {{--'itemsId' => $item->id,--}}
+                        {{--'selectedCatsId' => 0,--}}
+                        {{--'parentChildFlattenedArr' => $parentChildFlattenedArr--}}
+                    {{--])--}}
                 </div>
             </div>
             <div style='clear:both;'></div>
@@ -138,6 +150,19 @@ echo "itemsArr:\n";
 print_r($itemsArr);
 //echo "itemsColl:\n";
 //print_r($itemsColl->toArray());
+
+echo "itemsCatsColl\n";
+print_r($itemsCatsColl->toArray());
+
+echo "parentChildHierArr\n";
+print_r($parentChildHierArr);
+
+echo "itemsCatsArr\n";
+print_r($itemsCatsArr);
+
+echo "parentChildFlattenedArr\n";
+print_r($parentChildFlattenedArr);
+
 echo "</pre>";
 @endphp
 
@@ -149,6 +174,7 @@ var catsArr = @php echo json_encode($catsArr); @endphp;
 // selected arr  keys: [items_id][cats_id] = items_cats.id
 var itemsCatsArr = @php echo json_encode($itemsCatsArr); @endphp;
 
+// TURNED OFF
 if (0) {
 $(document).ready(function() {
 
