@@ -155,3 +155,7 @@ Route::get('/links/{links}/edit', 'LinksController@edit')->name('links.edit');
 Route::post('/links/{links}/update', 'LinksController@update')->name('links.update');
 Route::get('/links/{links}', 'LinksController@destroy')->name('links.delete');
 
+//Route::get("/index", "InstagramController@index")->name("instagram.index");
+//// Homepage Route
+//Route::get('/', 'WelcomeController@welcome')->name('welcome');
+Route::resource('instagram','InstagramController');

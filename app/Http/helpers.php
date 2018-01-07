@@ -61,3 +61,9 @@ function getName($catId, $catsColl, $html = '') {
     }
     return "$id name not found";
 }
+
+function printR($arr) {
+
+    return "<pre>" . print_r($arr, 1) . "</pre>";
+
+}
