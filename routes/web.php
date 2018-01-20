@@ -159,3 +159,8 @@ Route::get('/links/{links}', 'LinksController@destroy')->name('links.delete');
 //// Homepage Route
 //Route::get('/', 'WelcomeController@welcome')->name('welcome');
 Route::resource('instagram','InstagramController');
+
+Route::get('/twitter/getfeed', 'TwitterController@create')->name('twitter.create');
+Route::get('/twitter/store', 'TwitterController@store')->name('twitter.store');
+Route::get('/twitter/getfriends', 'TwitterController@show')->name('twitter.show');
+

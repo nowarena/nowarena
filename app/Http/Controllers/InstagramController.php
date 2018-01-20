@@ -18,20 +18,19 @@ class InstagramController extends Controller
     public function index(Request $request)
     {
 
-        //exit("gen access token");
+        exit("gen access token");
         //
         // http://dmolsen.com/2013/04/05/generating-access-tokens-for-instagram/
         //
 
         $providerKey = Config::get('services.instagram');
 
-        $redirectURI='http://dev.nowarena.com/instagram';
         //print_r($providerKey);exit;
         if (empty($request->code)) {
 
 
             $url = "https://api.instagram.com/oauth/authorize/?client_id=" . $providerKey['client_id'];
-            $url.="&redirect_uri=$redirectURI&response_type=code";
+            $url.="&redirect_uri=" . $providerKey['redirect'] . "&response_type=code";
             $url.="&scope=basic+public_content";
             //$url.="&scope=basic+public_content+follower_list+comments+relationships+likes";
             echo "<a href=$url>$url</a>";
@@ -76,6 +75,7 @@ class InstagramController extends Controller
      */
     public function create()
     {
+        exit('exploring api');
         $providerKey = Config::get('services.instagram');
         echo printR($providerKey);
         $instaUrl = 'https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' . $providerKey['access_token'];

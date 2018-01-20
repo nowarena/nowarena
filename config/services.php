@@ -45,13 +45,12 @@ return [
         'client_secret' => env('INSTAGRAM_SECRET'),
         'redirect'      => env('INSTAGRAM_REDIRECT_URI'),
         'access_token'      => env('INSTAGRAM_ACCESS_TOKEN'),
-    ]
-//
-//    'twitter' => [
-//        'client_id'     => env('TW_ID'),
-//        'client_secret' => env('TW_SECRET'),
-//        'redirect'      => env('TW_REDIRECT'),
-//    ],
+    ],
+    'twitter' => [
+        'client_id'     => env('TW_ID'),
+        'client_secret' => env('TW_SECRET'),
+        'redirect'      => env('TW_REDIRECT'),
+    ],
 //
 //    'google' => [
 //        'client_id'     => env('GOOGLE_ID'),

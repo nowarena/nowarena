@@ -30,9 +30,9 @@ function displayItemsCatsCkBoxes($arr, $str = '', $catsColl, $itemsCatsColl, $it
 
 function displayCats($arr, $catsColl, $str = '') {
 
-    //if (!is_array($arr)) {
-    //    echo "<li class='liAdmin'>X" . getName($arr, $catsColl) . "</li>";
-    //} else {
+    if (!is_array($arr)) {
+        echo "<li class='liAdmin'>" . getName($arr, $catsColl) . "</li>";
+    } else {
         foreach($arr as $id => $tmp) {
             echo "<ul class='ulAdmin'>";
             echo "<li class='liAdmin'>" . getName($id, $catsColl) . "</li>";
@@ -43,7 +43,7 @@ function displayCats($arr, $catsColl, $str = '') {
             }
             echo "</ul>";
         }
-    //}
+    }
 
 }
 

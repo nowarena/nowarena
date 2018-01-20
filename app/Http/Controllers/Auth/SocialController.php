@@ -19,6 +19,7 @@ class SocialController extends Controller
 
     public function getSocialRedirect($provider)
     {
+
         $providerKey = Config::get('services.'.$provider);
 
         if (empty($providerKey)) {
@@ -99,7 +100,7 @@ class SocialController extends Controller
 
                 // Twitter User Object details: https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/user-object
                 if ($socialData->provider == 'twitter') {
-                    $user->profile()->twitter_username = $socialUserObject->screen_name;
+                    //$user->profile()->twitter_username = $socialUserObject->screen_name;
                 }
                 $user->profile->save();
 
