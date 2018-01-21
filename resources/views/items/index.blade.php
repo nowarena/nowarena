@@ -105,10 +105,12 @@
                 <div class='td'  id='addCatsCheckboxes_{{ $item->id }}'>
 
                     @php
+                    echo printR($parentChildFlattenedArr);
+                    echo printR($itemsCatsColl);
                     // first cat is single, top level (eg. 'NFL') which should be apparent, displaying top level
                     // would be clutter
                     foreach($parentChildFlattenedArr as $id => $arr ) {
-                        displayItemsCatsCkBoxes($arr, '', $catsColl, $itemsCatsColl, $item->id);
+                        //displayItemsCatsCkBoxes($arr, '', $catsColl, $itemsCatsColl, $item->id);
                     }
 
                     @endphp

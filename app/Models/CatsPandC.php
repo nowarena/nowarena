@@ -147,6 +147,9 @@ class CatsPandC extends Model {
     public function flattenHier($catsColl) {
 
         $parentChildHierArr = $this->getHierarchy();
+        if (count($parentChildHierArr) == 0 && count($catsColl) > 0) {
+            return $catsColl;
+        }
         $x = [];
         foreach($parentChildHierArr as $key => $arr) {
 

@@ -115,6 +115,7 @@ class ItemsController extends Controller
 
         //$cats = new Cats();
         $catsArr = DB::table('cats')->select()->pluck('title', 'id');
+
 //        print_r($catsArr);exit;
 //        $newCatsArr = [];
 //        foreach($catsArr as $i => $obj) {
@@ -127,6 +128,8 @@ class ItemsController extends Controller
         $catsColl = $catsObj->pluck('title', 'id')->all();
         //$parentChildArr = $catsPandCObj->getParentChildArr();
         $parentChildFlattenedArr = $catsPandCObj->flattenHier($catsColl);
+        echo printR($parentChildFlattenedArr);
+
         $parentChildHierArr = $catsPandCObj->getHierarchy();
 
 
