@@ -16,7 +16,7 @@ class CreateSocialMediaTable extends Migration
         Schema::create('social_media', function (Blueprint $table) {
             $table->increments('id');
             $table->string('source_id', 64)->nullable(false);
-            $table->string('user_id', 64)->nullable(false);
+            $table->string('source_user_id', 64)->nullable(false);
             $table->string('username', 64)->nullable(false);
             $table->text('text')->nullable(false);
             $table->string('link', 255)->nullable(false);

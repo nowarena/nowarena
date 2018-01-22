@@ -9,7 +9,7 @@ use \DB;
 
 class Tweets extends Model
 {
-    protected $fillable = ['id', 'user_id', 'screen_name', 'text', 'urls', 'media', 'in_reply_to_status_id', 'in_reply_to_user_id', 'created_at'];
+    protected $fillable = ['id', 'source_user_id', 'site', 'screen_name', 'text', 'urls', 'media', 'in_reply_to_status_id', 'in_reply_to_user_id', 'created_at'];
 
     protected $friendsArr = [];
 
@@ -30,7 +30,7 @@ class Tweets extends Model
             $r = \Twitter::getFriends($paramArr);
             if (isset($r->users)) {
                 foreach($r->users as $obj) {
-                    $q = "INSERT INTO social_media_accounts (source_id, username, site, avatar, created_at, updated_at) 
+                    $q = "INSERT INTO social_media_accounts (source_user_id, username, site, avatar, created_at, updated_at) 
                           VALUES (?, ?, ?, ?, NOW(), NOW())
                           ON DUPLICATE KEY UPDATE avatar = ?, username = ?";
                     Db::insert($q, [$obj->id, $obj->screen_name, 'twitter.com', $obj->profile_image_url, $obj->profile_image_url, $obj->screen_name]);

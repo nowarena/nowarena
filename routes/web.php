@@ -168,3 +168,4 @@ Route::get('/twitter/getfeed', 'TwitterController@create')->name('twitter.create
 Route::get('/twitter/store', 'TwitterController@store')->name('twitter.store');
 Route::get('/twitter/getfriends', 'TwitterController@show')->name('twitter.show');
 
+Route::get("read", "ReadController");
