@@ -25,6 +25,7 @@ class TwitterController extends Controller
      */
     public function create()
     {
+        \DB::enableQueryLog();
         $twitterObj = new Tweets();
         $r = $twitterObj->getFeed();
         $twitterObj->saveFeed($r);

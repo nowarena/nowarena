@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use \DB;
-use App\Models\SocialMedia;
+
 
 class Tweets extends Model
 {
@@ -30,20 +30,24 @@ class Tweets extends Model
             $r = \Twitter::getFriends($paramArr);
             if (isset($r->users)) {
                 foreach($r->users as $obj) {
-                    $arr = [
-                        "user_id" => $obj->id,
-                        "username" => $obj->screen_name,
-                        "site" => "twitter.com",
-                        "active" => 0
-                    ];
-                    SocialMediaUsers::updateOrCreate($arr);
-                    $matchArr = array('user_id' => $obj->id, 'site' => 'twitter.com');
-                    $objArr[] = SocialMediaUsers::updateOrCreate($matchArr, ['updated_at' => 'NOW()']);
+                    $q = "INSERT INTO social_media_accounts (source_id, username, site, avatar, created_at, updated_at) 
+                          VALUES (?, ?, ?, ?, NOW(), NOW())
+                          ON DUPLICATE KEY UPDATE avatar = ?, username = ?";
+                    Db::insert($q, [$obj->id, $obj->screen_name, 'twitter.com', $obj->profile_image_url, $obj->profile_image_url, $obj->screen_name]);
+
+                    //$arr = [
+                    //    "source_id" => $obj->id,
+                    //    "username" => $obj->screen_name,
+                    //    "site" => "twitter.com",
+                    //    "avatar" => $obj->profile_image_url
+                    //];
+                    //SocialMediaAccounts::updateOrCreate($arr);
+                    //$matchArr = array('source_id' => $obj->id, 'site' => 'twitter.com');
+                    //$objArr[] = SocialMediaAccounts::updateOrCreate($matchArr, ['updated_at' => 'NOW()']);
                 }
             }
         } while($r->next_cursor_str > 0);
 
-        echo count($objArr) . " twitter friends";
 
     }
 
@@ -122,12 +126,12 @@ class Tweets extends Model
         }
         foreach($objArr as $obj) {
             $arr = [
-                'source_id' => $obj->id,
                 'user_id' => $obj->user_id,
+                'source_id' => $obj->id,
                 'username' => $obj->screen_name,
                 'site' => 'twitter.com',
                 'link' => 'https://twitter.com/' . $obj->screen_name . '/status/' . $obj->id,
-                'text' => $obj->text
+                'text' => iconv("UTF-8", "UTF-8//IGNORE", $obj->text)
             ];
             $objArr[] = SocialMedia::updateOrCreate($arr);
         }

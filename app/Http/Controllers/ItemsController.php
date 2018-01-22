@@ -6,6 +6,7 @@ use Auth;
 use Input;
 use App\Models\Items;
 use App\Models\ItemsCats;
+use App\Models\SocialMediaAccounts;
 use App\Models\CatsPandC;
 use App\Models\Cats;
 use Illuminate\Http\Request;
@@ -17,6 +18,50 @@ class ItemsController extends Controller
     public function __construct() {
         $this->middleware('auth');
     }
+
+    /*
+     * 'listsocialmediaaccounts' web route using 'create'
+     */
+    public function create(Request $request)
+    {
+        $itemsObj = new Items();
+        $itemsColl = $itemsObj->getItemsColl($request);
+        $socialMediaAccountsObj = new SocialMediaAccounts();
+        $socialMediaAssocAccountsArr = $socialMediaAccountsObj->getAssocAccountsArr($itemsColl, $itemsObj);
+        //$socialMediaAccountsColl = $socialMediaAccountsObj->all()->sortByDesc('title');
+        $socialMediaAccountsColl = SocialMediaAccounts::orderBy('username', 'asc')->get();
+        //echo printR($socialMediaAccountsColl);
+        //echo printR($socialMediaAssocAccountsArr);
+        //exit;
+        $search = $request->search;
+        $sort = $request->sort;
+        return view(
+            'items.listsocialmediaaccounts',
+            compact('itemsColl', 'sort', 'search', 'socialMediaAssocAccountsArr', 'socialMediaAccountsColl')
+        );
+    }
+
+    /*
+     * 'updatesocialmediaaccounts' web route using 'edit'
+     */
+    public function updatesocialmediaaccounts(Request $request, Items $items)
+    {
+
+        SocialMediaAccounts::updateRow($request);
+
+
+        $page = $request->input('on_page');
+        if (empty($page)) {
+            $arr = array();
+        } else {
+            $arr = ['page' => $page];
+        }
+
+        return redirect()->route('items.listsocialmediaaccounts', $arr);
+
+    }
+
+
 
     /*
      * Associate an items_id with a cats_id in the items_cats join table
@@ -61,37 +106,11 @@ class ItemsController extends Controller
     public function index(Request $request)
     {
         DB::enableQueryLog();
-        $request->validate([
-            'search' => 'nullable|min:3|max:255|regex:/^[a-zA-Z0-9_ -]+$/'
-        ]);
-        $search = $request->search;
-        $sort = $request->sort;
-        $items = new Items();
-        if ($sort == 'old') {
-            $items = $items->orderBy('created_at', 'asc');
-        } elseif ($sort == 'asc') {
-            $items = $items->orderBy('title', 'asc');
-        } elseif ($sort == 'desc') {
-            $items = $items->orderBy('title', 'desc');
-        } else {
-            $items = $items->orderBy('created_at', 'desc');
-        }
-        if (!empty($search)) {
-            $items = $items->where("title", "like", "%" . $search . "%");
-        }
 
-        $itemsColl = $items->paginate(3);
-
-        $itemsIdArr = array();
-        foreach ($itemsColl as $item) {
-            $itemsIdArr[] = $item->id;
-        }
-
-        $itemsCatsColl = array();
-        if (count($itemsIdArr)) {
-            $itemsCatsColl = DB::table('items_cats')
-                ->whereIn('items_id', $itemsIdArr)->get();
-        }
+        $itemsObj = new Items();
+        $itemsColl = $itemsObj->getItemsColl($request, 5);
+        $itemsCatsObj = new ItemsCats();
+        $itemsCatsColl = $itemsCatsObj->getItemsCats($itemsColl, $itemsObj);
 
         // Build lookup table of items_id that points to related cats_ids for that items_id
         $itemsCatsArr = array();
@@ -128,26 +147,16 @@ class ItemsController extends Controller
         $catsColl = $catsObj->pluck('title', 'id')->all();
         //$parentChildArr = $catsPandCObj->getParentChildArr();
         $parentChildFlattenedArr = $catsPandCObj->flattenHier($catsColl);
-        echo printR($parentChildFlattenedArr);
+
 
         $parentChildHierArr = $catsPandCObj->getHierarchy();
-
-
+        $search = $request->search;
+        $sort = $request->sort;
 
         return view(
             'items.index',
             compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl', 'parentChildHierArr', 'parentChildFlattenedArr', 'catsColl')
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //return view('items.create');
     }
 
     /**
@@ -159,7 +168,7 @@ class ItemsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|min:3|unique:items|max:30|regex:/^[a-zA-Z0-9_ -]+$/',
+            'title' => "required|min:3|unique:items|max:30|regex:/^[a-zA-Z0-9_ -']+$/",
             'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/'
         ]);
         Items::create(['title' => $request->title,'description' => $request->description]);
@@ -174,16 +183,6 @@ class ItemsController extends Controller
      */
     public function show(Items $items) {}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Items  $items
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Items $items)
-    {
-        return view('items.edit', compact('items'));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -200,7 +199,7 @@ class ItemsController extends Controller
             $uniqueTitleValidation = '|unique:items';
         }
         $request->validate([
-            'title' => 'required|min:3|max:30|regex:/^[a-zA-Z0-9_ -]+$/' . $uniqueTitleValidation,
+            'title' => "required|min:3|max:30|regex:/^[a-zA-Z0-9_ -']+$/" . $uniqueTitleValidation,
             'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/'
         ]);
         $items->title = $request->title;

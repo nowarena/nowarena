@@ -138,13 +138,17 @@ Route::get('/cats/{cats}/edit', 'CatsController@edit')->name('cats.edit');
 Route::post('/cats/{cats}/update', 'CatsController@update')->name('cats.update');
 Route::get('/cats/{cats}', 'CatsController@destroy')->name('cats.delete');
 
-// items editor
+// items
 Route::get('/items','ItemsController@index')->name('items.index');
-Route::get('/items/create', 'ItemsController@create')->name('items.create');
+// use 'create'
+Route::get('/items/listsocialmediaaccounts', 'ItemsController@create')->name('items.listsocialmediaaccounts');
+// use 'edit'
+Route::get('/items/{items}/updatesocialmediaaccounts', 'ItemsController@updatesocialmediaaccounts')->name('items.updatesocialmediaaccounts');
+
 Route::post('/items', 'ItemsController@store')->name('items.store');
-Route::get('/items/{items}/edit', 'ItemsController@edit')->name('items.edit');
 Route::post('/items/{items}/update', 'ItemsController@update')->name('items.update');
 Route::get('/items/{items}', 'ItemsController@destroy')->name('items.delete');
+// this is 404
 Route::post('/items/updateitemcat', 'ItemsController@updateItemCat');
 
 // links

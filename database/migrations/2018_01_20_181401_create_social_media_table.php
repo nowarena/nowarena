@@ -18,10 +18,12 @@ class CreateSocialMediaTable extends Migration
             $table->string('source_id', 64)->nullable(false);
             $table->string('user_id', 64)->nullable(false);
             $table->string('username', 64)->nullable(false);
-            $table->mediumText('text')->nullable(false);
+            $table->text('text')->nullable(false);
             $table->string('link', 255)->nullable(false);
             $table->string('site', 255)->nullable(false);
             $table->timestamps();
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
         });
     }
 

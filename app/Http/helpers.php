@@ -1,41 +1,65 @@
 <?php
 
-function displayItemsCatsCkBoxes($arr, $str = '', $catsColl, $itemsCatsColl, $itemsId) {
+function isOneDimension($arr) {
 
-    $count = 0;
-    foreach($arr as $id => $tmp) {
-        if (is_array($tmp)) {
-            echo getName($id, $catsColl) . " ";
-            displayItemsCatsCkBoxes($tmp, $str, $catsColl, $itemsCatsColl, $itemsId);
-        } else {
-            $html = " <input type='checkbox' name='catsIdArr[]' value = '$id'";
-            foreach($itemsCatsColl as $k => $obj) {
-                if ($obj->cats_id == $id && $itemsId == $obj->items_id) {
-                    $html.=" checked";
-                }
-            }
-            $html.="> ";
-            echo getName($id, $catsColl, $html);
+    if (!is_array($arr) || count($arr) == 0) {
+        return false;
+    }
+
+    foreach($arr as $i => $val) {
+        if (is_array($val)) {
+            return false;
         }
-        $count++;
+    }
 
-    }
-    if (count($tmp) != $count) {
-        echo "<br>";
-    }
+    return true;
 
 }
 
+function displayItemsCatsCkBoxes($arr, $str = '', $catsColl, $itemsCatsColl, $itemsId) {
+
+    foreach($arr as $id => $tmp) {
+        if (is_array($tmp)) {
+            echo displayItemsCatsCkBox($id, $catsColl, $itemsCatsColl, $itemsId);
+            displayItemsCatsCkBoxes($tmp, $str, $catsColl, $itemsCatsColl, $itemsId);
+            echo "<br>";
+        } else {
+            echo displayItemsCatsCkBox($id, $catsColl, $itemsCatsColl, $itemsId);
+        }
+    }
+
+
+}
+
+function displayItemsCatsCkBox($id, $catsColl, $itemsCatsColl, $itemsId) {
+    $html = " <input type='checkbox' name='catsIdArr[]' value = '$id'";
+    foreach($itemsCatsColl as $k => $obj) {
+        if ($obj->cats_id == $id && $itemsId == $obj->items_id) {
+            $html.=" checked";
+        }
+    }
+    $html.="> ";
+    return getName($id, $catsColl, $html);
+
+}
 
 
 function displayCats($arr, $catsColl, $str = '') {
 
     if (!is_array($arr)) {
-        echo "<li class='liAdmin'>" . getName($arr, $catsColl) . "</li>";
+        $name = getName($arr, $catsColl);
+        if ($name != 'name not found') {
+            echo "<li class='liAdmin'>" . $name . "</li>";
+        }
     } else {
         foreach($arr as $id => $tmp) {
+            $name = getName($id, $catsColl);
+            if ($name == 'name not found') {
+                // There may be no subcategories, which is fine.
+                continue;
+            }
             echo "<ul class='ulAdmin'>";
-            echo "<li class='liAdmin'>" . getName($id, $catsColl) . "</li>";
+            echo "<li class='liAdmin'>" . $name . "</li>";
             if (is_array($tmp)) {
                 echo "<ul class='ulAdmin'>";
                 displayCats($tmp, $catsColl);
@@ -59,7 +83,7 @@ function getName($catId, $catsColl, $html = '') {
         }
 
     }
-    return "$id name not found";
+    return "name not found";
 }
 
 function printR($arr) {

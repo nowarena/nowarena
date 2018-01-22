@@ -23,59 +23,11 @@
 
     <div style="clear:both;"> </div>
 
-    <form action="{{ route('items.index') }}" method="get">
-        <h2 class="sectionTitle">Edit</h2>
-        <div class="sectionForm">
-            <input type='text' name='search' size='20' placeholder='Search' value="{{ $search }}">
-            <input type='submit' value='Search' class='btn btn-primary'>
-        </div>
-    </form>
+    <!--h2 class="sectionTitle">Edit</h2-->
 
-    @php
-
-
-
-        $searchQStr = '';
-        if (!empty($search)) {
-            $searchQStr = "&search=" . urlencode($search);
-        }
-        $ascActive = '';
-        $descActive = '';
-        $newActive = '';
-        $oldActive = '';
-        if ($sort == 'asc') {
-            $ascActive = 'activeLink';
-        } elseif ($sort == 'old') {
-            $oldActive = 'activeLink';
-        } elseif ($sort == 'new') {
-            $newActive = 'activeLink';
-        } else {
-            $descActive = 'activeLink';
-        }
-
-        echo '<ul style="padding-left:20px;margin-top:20px;" class="nav nav-pills">';
-
-        echo '<li class="nav-item" style="margin-left:10px;margin-top:10px;font-weight:bold;">Sort:</li>';
-
-        echo '<li class="nav-item">';
-        echo '<a class="nav-link ' . $descActive . '" href="/items?sort=desc' . $searchQStr . '">Alpha Desc</a>';
-        echo '</li>';
-
-        echo '<li class="nav-item">';
-        echo '<a class="nav-link ' . $ascActive . '" href="/items?sort=asc' . $searchQStr . '">Alpha Asc</a>';
-        echo '</li>';
-
-        echo '<li class="nav-item">';
-        echo '<a class="nav-link ' . $newActive . '" href="/items?sort=new' . $searchQStr . '">Newest First</a>';
-        echo '</li>';
-
-        echo '<li class="nav-item">';
-        echo '<a class="nav-link ' . $oldActive . '" href="/items?sort=old' . $searchQStr . '">Oldest First</a>';
-        echo '</li>';
-
-        echo '</ul>';
-
-    @endphp
+    @include('items.partials.search', [
+        'search' => $search
+    ])
 
     <div style="clear:both;"></div>
     <div id='categoryTable'>
@@ -105,14 +57,21 @@
                 <div class='td'  id='addCatsCheckboxes_{{ $item->id }}'>
 
                     @php
-                    echo printR($parentChildFlattenedArr);
-                    echo printR($itemsCatsColl);
-                    // first cat is single, top level (eg. 'NFL') which should be apparent, displaying top level
-                    // would be clutter
-                    foreach($parentChildFlattenedArr as $id => $arr ) {
-                        //displayItemsCatsCkBoxes($arr, '', $catsColl, $itemsCatsColl, $item->id);
+                    //echo printR($parentChildFlattenedArr);
+                    //echo printR($itemsCatsColl);
+                    if (1) {
+                        displayItemsCatsCkBoxes($parentChildFlattenedArr, '', $catsColl, $itemsCatsColl, $item->id);
+                    } else if (isOneDimension($parentChildFlattenedArr)) {
+                        displayItemsCatsCkBoxes($parentChildFlattenedArr, '', $catsColl, $itemsCatsColl, $item->id);
+                    } else {
+                        $count = 0;
+                        foreach($parentChildFlattenedArr as $id => $arr ) {
+                            echo ($count !== 0) ? "<br>" : '';
+                            echo getName($id, $catsColl);
+                            displayItemsCatsCkBoxes($arr, '', $catsColl, $itemsCatsColl, $item->id);
+                            $count++;
+                        }
                     }
-
                     @endphp
 
                     {{--@include('layouts.partials.catscheckboxes', [--}}
@@ -126,7 +85,7 @@
             <div style='clear:both;'></div>
             </form>
             <div style='clear:both;'></div>
-            <hr>
+
         @endforeach
     </div>
     <div style='clear:both;'></div>
@@ -154,7 +113,7 @@ print_r($itemsArr);
 //print_r($itemsColl->toArray());
 
 echo "itemsCatsColl\n";
-print_r($itemsCatsColl->toArray());
+print_r($itemsCatsColl);
 
 echo "parentChildHierArr\n";
 print_r($parentChildHierArr);
