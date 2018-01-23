@@ -21,6 +21,7 @@ function displayItemsCatsCkBoxes($arr, $str = '', $catsColl, $itemsCatsColl, $it
     foreach($arr as $id => $tmp) {
         if (is_array($tmp)) {
             echo displayItemsCatsCkBox($id, $catsColl, $itemsCatsColl, $itemsId);
+            echo "<br> &nbsp; &nbsp; ";
             displayItemsCatsCkBoxes($tmp, $str, $catsColl, $itemsCatsColl, $itemsId);
             echo "<br>";
         } else {

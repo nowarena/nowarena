@@ -11,7 +11,7 @@ if (count($socialMediaAssocAccountsArr)) {
         if ($obj->items_id == $item->id) {
             $hasAccount = true;
 
-            echo "<input type='hidden' name='source_id' value='" . $obj->source_id . "'>";
+            echo "<input type='hidden' name='source_id' value='" . $obj->source_user_id . "'>";
             echo "<input type='hidden' name='site' value='" . $obj->site . "'>";
 
             echo "<div class='accountRemove'>";

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SocialMediaAccounts extends Model
 {
-    protected $fillable = ['items_id', 'source_id', 'username', 'site', 'is_active', 'is_primary'];
+    protected $fillable = ['items_id', 'source_id', 'source_user_id', 'username', 'site', 'is_active', 'is_primary'];
 
 
     /*
@@ -19,6 +19,7 @@ class SocialMediaAccounts extends Model
         $socialMediaAssocAccountsArr = [];
         $itemsIdArr = $itemsObj->getIdArrFromColl($itemsColl);
         if (count($itemsIdArr)) {
+
             $socialMediaAssocAccountsColl = \DB::table('social_media_accounts')
                 ->whereIn('items_id', $itemsIdArr)->get();
             $socialMediaAssocAccountsArr = $socialMediaAssocAccountsColl->toArray();

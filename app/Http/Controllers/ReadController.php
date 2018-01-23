@@ -23,7 +23,7 @@ class ReadController extends Controller
         if (empty($request->cats_id)) {
             $r = Read::getTopLevel();
         }
-
+echo PrintR($r);return;
         return response()->json(array($r));
 
     }

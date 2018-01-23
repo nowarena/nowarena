@@ -49,7 +49,6 @@ class ItemsController extends Controller
 
         SocialMediaAccounts::updateRow($request);
 
-
         $page = $request->input('on_page');
         if (empty($page)) {
             $arr = array();

@@ -9,7 +9,7 @@ use \DB;
 
 class Tweets extends Model
 {
-    protected $fillable = ['id', 'source_user_id', 'site', 'screen_name', 'text', 'urls', 'media', 'in_reply_to_status_id', 'in_reply_to_user_id', 'created_at'];
+    protected $fillable = ['id', 'user_id', 'site', 'screen_name', 'text', 'urls', 'media', 'in_reply_to_status_id', 'in_reply_to_user_id', 'created_at'];
 
     protected $friendsArr = [];
 
@@ -126,7 +126,7 @@ class Tweets extends Model
         }
         foreach($objArr as $obj) {
             $arr = [
-                'user_id' => $obj->user_id,
+                'source_user_id' => $obj->user_id,
                 'source_id' => $obj->id,
                 'username' => $obj->screen_name,
                 'site' => 'twitter.com',
