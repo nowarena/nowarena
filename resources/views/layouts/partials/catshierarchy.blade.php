@@ -2,6 +2,6 @@
 
 echo "<pre>";print_r($parentChildFlattenedArr);echo "</pre>";
 
-displayCats($parentChildFlattenedArr, $catsColl);
+displayCats($parentChildFlattenedArr, $catsCollArr);
 
 @endphp

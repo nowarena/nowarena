@@ -144,11 +144,16 @@ class CatsPandC extends Model {
 
     }
 
-    public function flattenHier($catsColl) {
+    public function getFlattenedHier(array $catsCollArr = null)
+    {
 
+        if (is_null($catsCollArr)) {
+            $catsObj = new Cats();
+            $catsCollArr = $catsObj->pluck('title', 'id')->all();
+        }
         $parentChildHierArr = $this->getHierarchy();
-        if (count($parentChildHierArr) == 0 && count($catsColl) > 0) {
-            return $catsColl;
+        if (count($parentChildHierArr) == 0 && count($catsCollArr) > 0) {
+            return $catsCollArr;
         }
         $x = [];
         foreach($parentChildHierArr as $key => $arr) {
@@ -169,21 +174,23 @@ class CatsPandC extends Model {
                             [0] => Array
             */
             $childId = isset($arr['child_id']) ? $arr['child_id'] : 0;
-            $tmp = $this->flatten($arr, [], $catsColl);
+            $tmp = $this->flatten($arr, array());
             $x[$childId] = $tmp;
 
-        }
 
+        }
+        //echo printR($x);exit;
         return $x;
 
     }
 
-    private function flatten($arr, $x, $catsColl) {
+    private function flatten($arr, $x) {
+
 
         if (isset($arr['children'])) {
             foreach($arr['children'] as $i => $tmp) {
                 $childId = $tmp['child_id'];
-                $val = $this->flatten($tmp, [], $catsColl);
+                $val = $this->flatten($tmp, $x);
                 $x[$childId] = $val;
 
             }

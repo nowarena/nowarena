@@ -48,14 +48,14 @@ if (count($socialMediaAssocAccountsArr)) {
 }
 
 if ($hasAccount == false) {
-    echo "<select name='add_source_id' class='socialMediaAccountDD'>";
+    echo "<select name='add_source_user_id' class='socialMediaAccountDD'>";
     echo "<option value='0'>Add</option>";
     foreach($socialMediaAccountsColl as $key => $obj) {
         // if already associated, skip
         if ($obj->items_id > 0) {
             continue;
         }
-        echo "<option value='" . $obj->source_id . "' ";
+        echo "<option value='" . $obj->source_user_id . "' ";
         if (stristr($obj->username, $item->title) || stristr($item->title, $obj->username)) {
             echo "selected";
         }

@@ -29,7 +29,6 @@ function displayItemsCatsCkBoxes($arr, $str = '', $catsColl, $itemsCatsColl, $it
         }
     }
 
-
 }
 
 function displayItemsCatsCkBox($id, $catsColl, $itemsCatsColl, $itemsId) {
@@ -73,8 +72,8 @@ function displayCats($arr, $catsColl, $str = '') {
 }
 
 
-function getName($catId, $catsColl, $html = '') {
-    foreach($catsColl as $id => $title ){
+function getName($catId, $catsCollArr, $html = '') {
+    foreach($catsCollArr as $id => $title ){
         if ($id == $catId) {
             $out = "<div class='catTitle'>";
             $out.= !empty($html) ? $html . " " : '';

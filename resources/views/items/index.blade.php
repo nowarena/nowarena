@@ -60,15 +60,15 @@
                     //echo printR($parentChildFlattenedArr);
                     //echo printR($itemsCatsColl);
                     if (1) {
-                        displayItemsCatsCkBoxes($parentChildFlattenedArr, '', $catsColl, $itemsCatsColl, $item->id);
+                        displayItemsCatsCkBoxes($parentChildFlattenedArr, '', $catsCollArr, $itemsCatsColl, $item->id);
                     } else if (isOneDimension($parentChildFlattenedArr)) {
-                        displayItemsCatsCkBoxes($parentChildFlattenedArr, '', $catsColl, $itemsCatsColl, $item->id);
+                        displayItemsCatsCkBoxes($parentChildFlattenedArr, '', $catsCollArr, $itemsCatsColl, $item->id);
                     } else {
                         $count = 0;
                         foreach($parentChildFlattenedArr as $id => $arr ) {
                             echo ($count !== 0) ? "<br>" : '';
-                            echo getName($id, $catsColl);
-                            displayItemsCatsCkBoxes($arr, '', $catsColl, $itemsCatsColl, $item->id);
+                            echo getName($id, $catsCollArr);
+                            displayItemsCatsCkBoxes($arr, '', $catsCollArr, $itemsCatsColl, $item->id);
                             $count++;
                         }
                     }

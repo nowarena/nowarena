@@ -87,7 +87,7 @@
     <div style='background-color:#ffffff;float:right;border:1px solid black;position:absolute;z-index:2;top:60px;right:50px;'>
             @include('layouts.partials.catshierarchy', [
                 'parentChildArr' => $parentChildArr,
-                'catsColl' => $catsColl,
+                'catsCollArr' => $catsCollArr,
                 'parentChildFlattenedArr' => $parentChildFlattenedArr
             ])
     </div>
@@ -131,7 +131,7 @@
 
                     @endphp
                     @include('layouts.partials.child_cats_dd', [
-                        'catsColl' => $catsColl,
+                        'catsCollArr' => $catsCollArr,
                         'selectedId' => 0,
                         'currentId' => $cat->id,
                         'parentChildArr' => $parentChildArr,
@@ -142,7 +142,7 @@
                     @if (!empty($parentChildArr[$cat->id]))
                         @include('layouts.partials.child_cats_ckboxes', [
                             'parentChildArr' => $parentChildArr,
-                            'catsColl' => $catsColl,
+                            'catsCollArr' => $catsCollArr,
                             'currentId' => $cat->id
                         ])
                     @endif

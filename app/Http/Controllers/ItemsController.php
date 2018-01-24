@@ -143,9 +143,9 @@ class ItemsController extends Controller
 
         $catsPandCObj = new CatsPandC();
         $catsObj = new Cats();
-        $catsColl = $catsObj->pluck('title', 'id')->all();
+        $catsCollArr = $catsObj->pluck('title', 'id')->all();
         //$parentChildArr = $catsPandCObj->getParentChildArr();
-        $parentChildFlattenedArr = $catsPandCObj->flattenHier($catsColl);
+        $parentChildFlattenedArr = $catsPandCObj->getFlattenedHier($catsCollArr);
 
 
         $parentChildHierArr = $catsPandCObj->getHierarchy();
@@ -154,7 +154,7 @@ class ItemsController extends Controller
 
         return view(
             'items.index',
-            compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl', 'parentChildHierArr', 'parentChildFlattenedArr', 'catsColl')
+            compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl', 'parentChildHierArr', 'parentChildFlattenedArr', 'catsCollArr')
         );
     }
 

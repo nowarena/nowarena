@@ -3,7 +3,7 @@
 echo "<select name='child_cats_id_add'>";
 
 $hasSelections = false;
-foreach($catsColl as $id => $title) {
+foreach($catsCollArr as $id => $title) {
     // can't set itself as a child to itself
     // if already set as a child
     if ($id == $currentId || (isset($parentChildArr[$currentId]) && in_array($id, $parentChildArr[$currentId]))) {

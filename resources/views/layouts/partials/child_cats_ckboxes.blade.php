@@ -1,14 +1,12 @@
 @php
 
-
-
     if (!isset($parentChildArr[$currentId])) {
         return;
     }
 
     foreach($parentChildArr[$currentId] as $childId) {
 
-        foreach($catsColl as $id => $title ){
+        foreach($catsCollArr as $id => $title ){
             if ($id == $childId) {
                 echo $title;
             }

@@ -12,21 +12,22 @@ class Cats extends Model
     /*
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getCats($search, $sort, $perPage)
+    public function getCats($search, $sort, $perPage = 3)
     {
+        $obj = $this;
         if ($sort == 'old') {
-            $this->orderBy('created_at', 'asc');
+            $obj = $obj->orderBy('created_at', 'asc');
         } elseif ($sort == 'asc') {
-            $this->orderBy('title', 'asc');
+            $obj = $obj->orderBy('title', 'asc');
         } elseif ($sort == 'desc') {
-            $this->orderBy('title', 'desc');
+            $obj = $obj->orderBy('title', 'desc');
         } else {
-            $this->orderBy('created_at', 'desc');
+            $obj = $obj->orderBy('created_at', 'desc');
         }
         if (!empty($search)) {
-            $this->where("title", "like", "%" . $search . "%");
+            $obj = $obj->where("title", "like", "%" . $search . "%");
         }
-        return $this->paginate(3);
+        return $obj->paginate($perPage);
     }
 
     public function getChildCats(\Illuminate\Pagination\LengthAwarePaginator $catsPaginator) {

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SocialMediaAccounts extends Model
 {
-    protected $fillable = ['items_id', 'source_id', 'source_user_id', 'username', 'site', 'is_active', 'is_primary'];
+    protected $fillable = ['items_id', 'source_user_id', 'username', 'site', 'is_active', 'is_primary'];
 
 
     /*
@@ -32,18 +32,18 @@ class SocialMediaAccounts extends Model
 
     public static function updateRow(Request $request)
     {
-        if ($request->add_source_id) {
+        if ($request->add_source_user_id) {
             $q = "UPDATE social_media_accounts 
                   SET items_id = ? 
-                  WHERE source_id = ?";
-            \DB::update($q, [$request->items_id, $request->add_source_id]);
+                  WHERE source_user_id = ?";
+            \DB::update($q, [$request->items_id, $request->add_source_user_id]);
         } else if ($request->remove) {
             $q = "UPDATE social_media_accounts 
                   SET items_id = 0, is_active = 0, is_primary = 0 
                   WHERE 1 = 1 
-                  AND source_id = ? 
+                  AND source_user_id = ? 
                   AND site = ?";
-            \DB::update($q, [$request->source_id, $request->site]);
+            \DB::update($q, [$request->add_source_user_id, $request->site]);
         } else {
             $isActive = !empty($request->is_active) ? $request->is_active : 0;
             $isPrimary = !empty($request->is_primary) ? $request->is_primary : 0;
@@ -51,10 +51,10 @@ class SocialMediaAccounts extends Model
             $q = "UPDATE social_media_accounts 
                   SET is_active = ?, is_primary = ?, use_avatar = ?  
                   WHERE 1 = 1 
-                  AND source_id = ? 
+                  AND source_user_id = ? 
                   AND site = ? 
                   AND items_id = ?";
-            \DB::update($q, [$isActive, $isPrimary, $useAvatar, $request->source_id, $request->site, $request->items_id]);
+            \DB::update($q, [$isActive, $isPrimary, $useAvatar, $request->source_user_id, $request->site, $request->items_id]);
         }
     }
 

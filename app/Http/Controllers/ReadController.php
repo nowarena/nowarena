@@ -19,6 +19,11 @@ class ReadController extends Controller
     public function __invoke(Request $request, SocialMedia $socialMediaObj)
     {
 
+        $r = new \App\Models\CatsPandC();
+        $x=$r->getFlattenedHier();
+//\DB::enableQueryLog();
+//dd(\DB::getQueryLog());
+echo printR($x);
         // if no cats_id passed in, get top level cats
         if (empty($request->cats_id)) {
             $r = Read::getTopLevel();

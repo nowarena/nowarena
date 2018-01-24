@@ -31,14 +31,16 @@ class CatsController extends Controller
         $sort = $request->sort;
         $catsObj = new Cats();
         $catsPaginator = $catsObj->getCats($search, $sort, 3);
-        $catsColl = $catsObj->pluck('title', 'id')->all();
+//        dd(DB::getQueryLog());
+//        echo printR($catsPaginator);exit;
+        $catsCollArr = $catsObj->pluck('title', 'id')->all();
 
         $catsPandCObj = new CatsPandC();
         $parentChildArr = $catsPandCObj->getParentChildArr();
-        $parentChildFlattenedArr = $catsPandCObj->flattenHier($catsColl);
+        $parentChildFlattenedArr = $catsPandCObj->getFlattenedHier($catsCollArr);
         $parentChildHierArr = $catsPandCObj->getHierarchy();
 
-        return view('cats.index', compact('catsPaginator', 'catsColl', 'parentChildArr', 'parentChildHierArr', 'sort', 'search', 'parentChildFlattenedArr'));
+        return view('cats.index', compact('catsPaginator', 'catsCollArr', 'parentChildArr', 'parentChildHierArr', 'sort', 'search', 'parentChildFlattenedArr'));
     }
 
     /**
