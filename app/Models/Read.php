@@ -26,11 +26,11 @@ class Read extends Model
         foreach($parentCatsArr as $obj) {
             $dataArr[$obj->id]['title'] = $obj->title;
             $dataArr[$obj->id]['cats_id'] = $obj->id;
-            $dataArr = self::getItems($obj, $dataArr);
-            $childrenArr = self::getChildren($obj, $dataArr[$obj->id]);
-            if (count($childrenArr)) {
-                $dataArr[$obj->id]['children'] = $childrenArr;
-            }
+            //$dataArr = self::getItems($obj, $dataArr);
+            //$childrenArr = self::getChildren($obj, $dataArr[$obj->id]);
+            //if (count($childrenArr)) {
+            //    $dataArr[$obj->id]['children'] = $childrenArr;
+            //}
         }
         return $dataArr;
     }
@@ -89,7 +89,7 @@ class Read extends Model
               INNER JOIN cats_p_and_c ON cats.id = cats_p_and_c.child_id
               AND cats_p_and_c.parent_id = ?";
         $r = \DB::select($q, [$id]);
-        echo preg_replace("~ = \?~", " = $id", $q) . ";<br>";
+        echo preg_replace("~ = \?~s", " = $id", $q) . ";<br>";
         //echo $q."|$id|<br>";
         return $r;
     }
@@ -118,6 +118,44 @@ class Read extends Model
               LIMIT $limit OFFSET $offset";
         $r = \DB::select($q, [$itemsId]);
         return $r;
+    }
+
+    public static function getLastCategories($catsId)
+    {
+        $o = new \App\Models\CatsPandC();
+        $catsArr = $o->getFlattenedHier();
+        echo printR($catsArr);
+        $r = self::getCategoryChildren($catsArr, $catsId);
+        echo "<hr>";
+        echo printR($r);
+        echo "<hr>";
+    }
+
+    private static function getCategoryChildren($catsArr, $currentCatsId)
+    {
+
+        if (!is_array($catsArr)) {
+            return false;
+        }
+
+        foreach($catsArr as $id => $arr) {
+
+            if (!is_array($arr)) {
+                return false;
+            }
+            if ($id == $currentCatsId) {
+                return $arr;
+            }
+            if (is_array($arr)) {
+                $r = self::getCategoryChildren($arr, $currentCatsId);
+                if ($r !== false) {
+                    return $r;
+                }
+            }
+        }
+
+        return false;
+
     }
 
 }

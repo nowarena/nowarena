@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SocialMedia;
 use App\Models\Read;
+use App\Models\Cats;
 use Illuminate\Http\Request;
 
 
@@ -19,16 +20,32 @@ class ReadController extends Controller
     public function __invoke(Request $request, SocialMedia $socialMediaObj)
     {
 
-        $r = new \App\Models\CatsPandC();
-        $x=$r->getFlattenedHier();
+        $o = new \App\Models\CatsPandC();
+
+
+        //$x = $o->getFlattenedHier();
+
 //\DB::enableQueryLog();
 //dd(\DB::getQueryLog());
-echo printR($x);
+//echo printR($x);
+$catsId = $request->cats_id;
+$catsId = 1;
+
         // if no cats_id passed in, get top level cats
-        if (empty($request->cats_id)) {
+        if (empty($catsId)) {
             $r = Read::getTopLevel();
+        } else {
+            $r = Read::getLastCategories($catsId);
+            // if there are no last categories, then get items under $catsId
         }
-echo PrintR($r);return;
+echo printR($r);
+        return;
+
+        $catsObj = new Cats();
+        $catsCollArr = $catsObj->pluck('title', 'id')->all();
+        echo printR($catsCollArr);
+
+        return;
         return response()->json(array($r));
 
     }
