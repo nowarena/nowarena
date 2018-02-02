@@ -120,18 +120,19 @@ class Read extends Model
         return $r;
     }
 
-    public static function getLastCategories($catsId)
+    public static function getChildrenCategories($catsId)
     {
         $o = new \App\Models\CatsPandC();
         $catsArr = $o->getFlattenedHier();
         echo printR($catsArr);
-        $r = self::getCategoryChildren($catsArr, $catsId);
-        echo "<hr>";
-        echo printR($r);
-        echo "<hr>";
+        $r = self::processChildrenCategories($catsArr, $catsId);
+//        echo "<hr>";
+//        echo printR($r);
+//        echo "<hr>";
+        return $r;
     }
 
-    private static function getCategoryChildren($catsArr, $currentCatsId)
+    private static function processChildrenCategories($catsArr, $currentCatsId)
     {
 
         if (!is_array($catsArr)) {
@@ -140,21 +141,89 @@ class Read extends Model
 
         foreach($catsArr as $id => $arr) {
 
-            if (!is_array($arr)) {
-                return false;
-            }
             if ($id == $currentCatsId) {
                 return $arr;
             }
+            if (!is_array($arr)) {
+                continue;
+            }
             if (is_array($arr)) {
-                $r = self::getCategoryChildren($arr, $currentCatsId);
+                $r = self::processChildrenCategories($arr, $currentCatsId);
                 if ($r !== false) {
                     return $r;
                 }
             }
+
         }
 
         return false;
+
+    }
+
+//    public static function getItemsArrWithCatsId($catsId)
+//    {
+//
+//        $itemsArr = self::getItemsArrWithCatsId($catsId);
+//        foreach($itemsArr as $obj) {
+//            $itemsIdArr[$obj->items_id] = $obj->title;
+//        }
+//        echo "<hr>itemsIdArr:<br>";
+//        echo printR($itemsIdArr);
+//
+//    }
+
+    public static function getItemsArrWithCatsId($catsId)
+    {
+
+        $q = "SELECT title, description, items_id FROM items
+              INNER JOIN items_cats ON items.id = items_cats.items_id 
+              WHERE cats_id = ?";
+        $r = \DB::select($q, [$catsId]);
+        return $r;
+    }
+
+    public static function getItemsArrWithItemsId($itemsId)
+    {
+
+        $q = "SELECT id as items_id, title, description  
+              FROM items
+              WHERE id = ?";
+        $r = \DB::select($q, [$itemsId]);
+        return $r;
+    }
+
+    public static function getSocialMediaWithItemsArr($itemsArr, $offset = 0, $limit = 3)
+    {
+
+        //$itemsIdArr = array_filter(array_map(function($n) { return $n->items_id; }, $itemsArr));
+        if (count($itemsArr) == 0) {
+            return false;
+        }
+        //echo __METHOD__ . printR($itemsArr);
+        foreach($itemsArr as $key => $obj) {
+            $q = "SELECT * FROM social_media sm 
+                  INNER JOIN social_media_accounts sma on sma.source_user_id = sm.source_user_id 
+                  WHERE 1 =1 
+                  AND sma.items_id IN (" . $obj->items_id . ") 
+                  AND is_active = 1  
+                  ORDER BY sm.created_at DESC 
+                  LIMIT $limit OFFSET $offset";
+            $r = \DB::select($q, array());
+            $itemsArr[$key]->social_media = $r;
+
+        }
+
+        return $itemsArr;
+
+    }
+
+    public static function getSocialMediaWithItemId($itemsId, $offset = 0, $limit = 3)
+    {
+
+        $itemsObj = new \stdClass();
+        $itemsObj->items_id = $itemsId;
+        $itemsArr = array($itemsObj);
+        return self::getSocialMediaWithItemsArr($itemsArr, $offset, $limit);
 
     }
 

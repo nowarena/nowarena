@@ -29,16 +29,39 @@ class ReadController extends Controller
 //dd(\DB::getQueryLog());
 //echo printR($x);
 $catsId = $request->cats_id;
-$catsId = 1;
+$catsId = 32;
+$itemsId = 38;
+$offset = 0;
+$limit = 3;
 
-        // if no cats_id passed in, get top level cats
-        if (empty($catsId)) {
+
+        if (!empty($itemsId)) {
+            // get all social media for items_id eg. Dallas Cowboyws
+            $itemsArr = \App\Models\Read::getItemsArrWithItemsId($itemsId, $offset, $limit);
+            echo printR($itemsArr);
+            if (count($itemsArr) == 0) {
+                exit ("not finding items_id $itemsId");
+            }
+            $itemsArr = Read::getSocialMediaWithItemsArr($itemsArr);
+            echo printR($itemsArr);
+        } else if (empty($catsId)) {
+            // if no cats_id passed in, get top level cats
             $r = Read::getTopLevel();
         } else {
-            $r = Read::getLastCategories($catsId);
-            // if there are no last categories, then get items under $catsId
+            // get all children, if any, of cats_id
+            $r = Read::getChildrenCategories($catsId);
+            echo "child cats:";
+            echo printR($r);
+            // if there are no children and $r is a scalar, then get items under $catsId
+            if (!is_array($r) && $r !== false) {
+                // get items of single category
+                $itemsArr = Read::getItemsArrWithCatsId($r);
+                $itemsArr = Read::getSocialMediaWithItemsArr($itemsArr);
+                echo printR($itemsArr);
+
+            }
         }
-echo printR($r);
+
         return;
 
         $catsObj = new Cats();
@@ -49,4 +72,5 @@ echo printR($r);
         return response()->json(array($r));
 
     }
+
 }
