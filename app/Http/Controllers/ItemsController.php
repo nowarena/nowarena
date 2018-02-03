@@ -46,7 +46,7 @@ class ItemsController extends Controller
      */
     public function updatesocialmediaaccounts(Request $request, Items $items)
     {
-
+        //\DB::enableQueryLog();
         SocialMediaAccounts::updateRow($request);
 
         $page = $request->input('on_page');
@@ -107,39 +107,19 @@ class ItemsController extends Controller
         DB::enableQueryLog();
 
         $itemsObj = new Items();
-        $itemsColl = $itemsObj->getItemsColl($request, 5);
+        $itemsColl = $itemsObj->getItemsColl($request, 3);
+
         $itemsCatsObj = new ItemsCats();
         $itemsCatsColl = $itemsCatsObj->getItemsCats($itemsColl, $itemsObj);
+
+        $socialMediaAccountsObj = new SocialMediaAccounts();
+        $socialMediaAssocAccountsArr = $socialMediaAccountsObj->getAssocAccountsArr($itemsColl, $itemsObj);
 
         // Build lookup table of items_id that points to related cats_ids for that items_id
         $itemsCatsArr = array();
         $itemsArr = [];
-        /*
-        foreach($itemsColl as $itemsObj) {
-            $hasCats = false;
-            foreach($itemsCatsColl as $itemsCatsObj) {
-                if ($itemsCatsObj->items_id == $itemsObj->id) {
-                    $hasCats = true;
-                    $itemsCatsArr[$itemsObj->id][$itemsCatsObj->cats_id][] = $itemsCatsObj->id;
-                }
-            }
-            if ($hasCats == false) {
-                // this saves on having to check for undefined before getting length of array
-                $itemsCatsLookupArr[$itemsObj->id] = new \stdClass();
-            }
-            $itemsArr[$itemsObj->id] = $itemsObj->title;
-        }
-*/
 
-        //$cats = new Cats();
         $catsArr = DB::table('cats')->select()->pluck('title', 'id');
-
-//        print_r($catsArr);exit;
-//        $newCatsArr = [];
-//        foreach($catsArr as $i => $obj) {
-//            $newCatsArr[$obj->id] = $obj->title;
-//        }
-//        $catsArr = $newCatsArr;
 
         $catsPandCObj = new CatsPandC();
         $catsObj = new Cats();
@@ -154,7 +134,7 @@ class ItemsController extends Controller
 
         return view(
             'items.index',
-            compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl', 'parentChildHierArr', 'parentChildFlattenedArr', 'catsCollArr')
+            compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl', 'parentChildHierArr', 'parentChildFlattenedArr', 'catsCollArr', 'socialMediaAssocAccountsArr')
         );
     }
 
@@ -236,9 +216,10 @@ class ItemsController extends Controller
      * @param  \App\Items  $items
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Items $items)
+    public function destroy(Request $request, Items $items)
     {
+        $page = $request->page;
         $items->delete();
-        return redirect(route('items.index'));
+        return redirect()->route('items.index', ['page' => $page]);
     }
 }

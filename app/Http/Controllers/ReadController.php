@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SocialMedia;
 use App\Models\Read;
 use App\Models\Cats;
 use Illuminate\Http\Request;
@@ -17,7 +16,7 @@ class ReadController extends Controller
      * @param  \App\Models\SocialMedia  $socialMediaObj
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, SocialMedia $socialMediaObj)
+    public function __invoke(Request $request)
     {
 
         $o = new \App\Models\CatsPandC();
@@ -28,21 +27,21 @@ class ReadController extends Controller
 //\DB::enableQueryLog();
 //dd(\DB::getQueryLog());
 //echo printR($x);
-$catsId = $request->cats_id;
-$catsId = 32;
-$itemsId = 38;
-$offset = 0;
+//$catsId = $request->cats_id;
+$catsId = 5;
+$itemsId = 55;
+$offset = 1;
 $limit = 3;
 
 
         if (!empty($itemsId)) {
             // get all social media for items_id eg. Dallas Cowboyws
-            $itemsArr = \App\Models\Read::getItemsArrWithItemsId($itemsId, $offset, $limit);
+            $itemsArr = Read::getItemsArrWithItemsId($itemsId);
             echo printR($itemsArr);
             if (count($itemsArr) == 0) {
                 exit ("not finding items_id $itemsId");
             }
-            $itemsArr = Read::getSocialMediaWithItemsArr($itemsArr);
+            $itemsArr = Read::getSocialMediaWithItemsArr($itemsArr, $offset, $limit);
             echo printR($itemsArr);
         } else if (empty($catsId)) {
             // if no cats_id passed in, get top level cats
@@ -56,7 +55,7 @@ $limit = 3;
             if (!is_array($r) && $r !== false) {
                 // get items of single category
                 $itemsArr = Read::getItemsArrWithCatsId($r);
-                $itemsArr = Read::getSocialMediaWithItemsArr($itemsArr);
+                $itemsArr = Read::getSocialMediaWithItemsArr($itemsArr, $offset, $limit);
                 echo printR($itemsArr);
 
             }

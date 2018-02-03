@@ -1,7 +1,7 @@
 rm -fr storage/framework/views/*
 rm -fr storage/framework/sessions/*
 rm -fr bootstrap/cache/config.php
-#php artisan config:cache
+php artisan config:clear 
 php artisan route:clear
 php artisan view:clear
 php artisan cache:clear

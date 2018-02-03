@@ -39,7 +39,7 @@ function displayItemsCatsCkBox($id, $catsColl, $itemsCatsColl, $itemsId) {
         }
     }
     $html.="> ";
-    return getName($id, $catsColl, $html);
+    return "<label>" . getName($id, $catsColl, $html) . "</label>";
 
 }
 
@@ -89,5 +89,22 @@ function getName($catId, $catsCollArr, $html = '') {
 function printR($arr) {
 
     return "<pre>" . print_r($arr, 1) . "</pre>";
+
+}
+
+function getSocialMediaHyperLink($socialMediaAssocAccountsArr, $itemId, $usernameText = false) {
+
+    foreach($socialMediaAssocAccountsArr as $obj) {
+        if ($obj->items_id == $itemId) {
+            $r = "<a target='_blank' href='https://" . $obj->site . "/" . $obj->username . "'>";
+            if ($usernameText) {
+                $r.=$obj->username;
+            } else {
+                $r.="<span style='font-size:17px;'>&uarr;</span>";
+            }
+            $r.="</a>";
+            return $r;
+        }
+    }
 
 }

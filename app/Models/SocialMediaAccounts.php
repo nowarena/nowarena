@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SocialMediaAccounts extends Model
 {
-    protected $fillable = ['items_id', 'source_user_id', 'username', 'site', 'is_active', 'is_primary'];
+    protected $fillable = ['items_id', 'source_user_id', 'username', 'site', 'is_active', 'is_primary', 'use_avatar'];
 
 
     /*
@@ -55,6 +55,8 @@ class SocialMediaAccounts extends Model
                   AND site = ? 
                   AND items_id = ?";
             \DB::update($q, [$isActive, $isPrimary, $useAvatar, $request->source_user_id, $request->site, $request->items_id]);
+            //$r = dd( \DB::getQueryLog() );
+
         }
     }
 

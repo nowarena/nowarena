@@ -38,6 +38,7 @@
             {{ csrf_field() }}
             <div class='tr'>
                 <div class='td'>
+                    @php echo getSocialMediaHyperLink($socialMediaAssocAccountsArr, $item->id); @endphp
                     <input type="text" size="30" name="title" value="{{ $item->title }}">
                     <input type="hidden" size="30" name="title_old" value="{{ $item->title }}">
                 </div>
@@ -48,7 +49,7 @@
                     <button class="btn btn-primary" name="edit">Submit Edit</button>
                 </div>
                 <div class='td'>
-                    <a class="btn btn-danger" href="{{ route('items.delete', $item )}}" onclick="return confirm('Really delete?');">Delete</a>
+                    <a class="btn btn-danger" href="{{ route('items.delete', $item, ['page' => $itemsColl->currentPage()] )}}" onclick="return confirm('Really delete?');">Delete</a>
 
                 </div>
             </div>

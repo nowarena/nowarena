@@ -63,9 +63,15 @@ class CatsController extends Controller
     {
         $request->validate([
             'title' => 'required|min:3|unique:cats|max:30|regex:/^[a-zA-Z0-9_ -]+$/',
-            'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/'
+            'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/',
+            'parent_only' => 'nullable|integer'
         ]);
         Cats::create(['title' => $request->title,'description' => $request->description]);
+        $id = DB::getPdo()->lastInsertId();
+        if (!empty($request->parent_only)) {
+            $catsPandCObj = new CatsPandC();
+            $catsPandCObj->create(['parent_id' => 0, 'child_id' => $id]);
+        }
         return redirect(route('cats.index'));
     }
 
@@ -122,7 +128,6 @@ class CatsController extends Controller
         $catsPandCObj->where('parent_id', '=', $request->parent_cats_id)->delete();
         //$catsPandCObj->where('child_id', '=', $request->parent_cats_id)->delete();
 
-
         // add any new child_id additions
         if (!empty($request->child_cats_id_add)) {
             DB::table('cats_p_and_c')->insert(array('child_id' => $request->child_cats_id_add, 'parent_id' => $request->parent_cats_id));
@@ -148,7 +153,7 @@ class CatsController extends Controller
         return redirect()->route('cats.index', $arr);
     }
 
-    /**
+       /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Cats  $cats
