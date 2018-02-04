@@ -27,7 +27,9 @@ class ItemsController extends Controller
         $itemsObj = new Items();
         $itemsColl = $itemsObj->getItemsColl($request);
         $socialMediaAccountsObj = new SocialMediaAccounts();
+        //\DB::enableQueryLog();
         $socialMediaAssocAccountsArr = $socialMediaAccountsObj->getAssocAccountsArr($itemsColl, $itemsObj);
+        //$r = dd( \DB::getQueryLog() );
         //$socialMediaAccountsColl = $socialMediaAccountsObj->all()->sortByDesc('title');
         $socialMediaAccountsColl = SocialMediaAccounts::orderBy('username', 'asc')->get();
         //echo printR($socialMediaAccountsColl);
@@ -104,7 +106,7 @@ class ItemsController extends Controller
      */
     public function index(Request $request)
     {
-        DB::enableQueryLog();
+        //DB::enableQueryLog();
 
         $itemsObj = new Items();
         $itemsColl = $itemsObj->getItemsColl($request, 3);

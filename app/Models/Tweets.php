@@ -24,10 +24,11 @@ class Tweets extends Model
             'cursor' => $cursor,
             'count' => 200
         ];
-
+        \DB::enableQueryLog();
         do {
 
             $r = \Twitter::getFriends($paramArr);
+            echo printR($r);
             if (isset($r->users)) {
                 foreach($r->users as $obj) {
                     $q = "INSERT INTO social_media_accounts (source_user_id, username, site, avatar, created_at, updated_at) 
@@ -48,7 +49,7 @@ class Tweets extends Model
             }
         } while($r->next_cursor_str > 0);
 
-
+        $r = dd( \DB::getQueryLog() );
     }
 
     public function getFeed()

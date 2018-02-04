@@ -15,6 +15,7 @@ class SocialMediaAccounts extends Model
      */
     public function getAssocAccountsArr($itemsColl, $itemsObj)
     {
+        //\DB::enableQueryLog();
 
         $socialMediaAssocAccountsArr = [];
         $itemsIdArr = $itemsObj->getIdArrFromColl($itemsColl);
@@ -23,8 +24,8 @@ class SocialMediaAccounts extends Model
             $socialMediaAssocAccountsColl = \DB::table('social_media_accounts')
                 ->whereIn('items_id', $itemsIdArr)->get();
             $socialMediaAssocAccountsArr = $socialMediaAssocAccountsColl->toArray();
-
         }
+        //$r = dd( \DB::getQueryLog() );
 
         return $socialMediaAssocAccountsArr;
 

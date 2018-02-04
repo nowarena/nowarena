@@ -30,7 +30,7 @@
     <input type="hidden" name="on_page" value="{{$itemsColl->currentPage()}}">
     <input type="hidden" name="items_id" value="{{ $item->id }}">
     {{ csrf_field() }}
-    <div class='itemTitle' style='float:left;'>{{$item->title}}</div>
+    <div class='itemTitle' style='float:left;'><a href='/items?search=@php echo urlencode($item->title); @endphp'>{{$item->title}}</a></div>
     @include('items.partials.socialmediaaccounts', [
         'item' => $item,
         'socialMediaAssocAccountsArr' => $socialMediaAssocAccountsArr,
