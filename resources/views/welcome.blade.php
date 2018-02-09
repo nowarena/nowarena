@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>NowArena.com</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -67,30 +67,22 @@
                 margin-bottom: 30px;
             }
         </style>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+
+
+
+        <link href="css/react-swipe.css" rel="stylesheet">
+
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    <div id="root"></div>
-                    <script src="{{mix('js/app.js')}}" ></script>
-                </div>
 
-                <div class="links">
+                <div id="app"></div>
+                <script src="js/react-swipe.bundle.min.js"></script>
 
-                </div>
             </div>
-        </div>
+
     </body>
 </html>

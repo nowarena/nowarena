@@ -17,12 +17,15 @@
         "jquery": "^3.1.1",
         "laravel-mix": "^0.8.1",
         "lodash": "^4.17.4",
-        "react": "^15.4.2",
+        "react": "^15.6.2",
         "react-dom": "^15.4.2"
     },
     "dependencies": {
         "dropzone": "^4.3.0",
         "hideshowpassword": "^2.0.10",
-        "password-strength-meter": "^1.1.2"
+        "password-strength-meter": "^1.1.2",
+        "react-router": "^2.8.1",
+        "react-swipe": "^5.1.1",
+        "swipe-js-iso": "^2.0.4"
     }
 }
