@@ -70,7 +70,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: SyntaxError: Unexpected token (56:51)\n\n\u001b[0m \u001b[90m 54 | \u001b[39m\n \u001b[90m 55 | \u001b[39m                \u001b[33m<\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 56 | \u001b[39m                    \u001b[33m<\u001b[39m\u001b[33mbutton\u001b[39m type\u001b[33m=\u001b[39m\u001b[32m\"button\"\u001b[39m onClick\u001b[33m=\u001b[39m{\u001b[33m:\u001b[39m\u001b[33m:\u001b[39m\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mprev}\u001b[33m>\u001b[39m\u001b[33mPrev\u001b[39m\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mbutton\u001b[39m\u001b[33m>\u001b[39m\n \u001b[90m    | \u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 57 | \u001b[39m                    \u001b[33m<\u001b[39m\u001b[33mbutton\u001b[39m type\u001b[33m=\u001b[39m\u001b[32m\"button\"\u001b[39m onClick\u001b[33m=\u001b[39m{\u001b[33m:\u001b[39m\u001b[33m:\u001b[39m\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mnext}\u001b[33m>\u001b[39m\u001b[33mNext\u001b[39m\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mbutton\u001b[39m\u001b[33m>\u001b[39m\n \u001b[90m 58 | \u001b[39m                \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m\n \u001b[90m 59 | \u001b[39m            \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n");
+
 
 /***/ }),
 /* 1 */

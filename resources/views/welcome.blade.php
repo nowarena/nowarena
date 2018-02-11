@@ -78,9 +78,13 @@
     <body>
 
             <div class="content">
-
-                <div id="app"></div>
-                <script src="js/react-swipe.bundle.min.js"></script>
+                <h1>AbbotKinneyBL.com</h1>
+                <div id="news_and_people"></div>
+                <div id="food"></div>
+                <div id="tech"></div>
+                <div id="shopping"></div>
+                <div id="fashion"></div>
+                <script src="js/react-swipe.bundle.min.js?r=" + Math.floor((Math.random() * 10000) + 1) + "></script>
 
             </div>
 
