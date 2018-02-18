@@ -20,7 +20,7 @@ class TwitterController extends Controller
 
     /**
      *
-     *
+     * /twitter/getfeed
      * @return \Illuminate\Http\Response
      */
     public function create()

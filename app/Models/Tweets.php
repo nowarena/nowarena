@@ -55,6 +55,7 @@ class Tweets extends Model
     public function getFeed()
     {
 
+        // get max id from 'tweets' table (not 'social_media' table)
         $since_id = $this->max('id');
         $paramArr = [
             'count' => 200,
@@ -151,11 +152,17 @@ class Tweets extends Model
         //        [media_url] => http://pbs.twimg.com/media/DUBCm74VAAAQ6NL.jpg
         //    )
         //)
+        $count = 0;
         foreach($mediaArr as $shortUrl => $obj) {
             $expandedUrl = $obj->expanded_url;
             $mediaUrl = $obj->media_url;
             $thumb = "<img src='" . $mediaUrl . ":thumb' width='150' height='150'>";
-            $text = str_replace($shortUrl, "<a target='_blank' href='$expandedUrl'>$thumb</a>", $tweetDBObj->text);
+            $replace = "<a target='_blank' href='$expandedUrl'>$thumb</a>";
+            if ($count == 0) {
+                $replace = "<a class='firstImage' target='_blank' href='$expandedUrl'>$thumb</a>";
+            }
+            $text = str_replace($shortUrl, $replace, $tweetDBObj->text);
+            $count++;
         }
         $tweetDBObj->text = $text;
         return $tweetDBObj;

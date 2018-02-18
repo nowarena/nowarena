@@ -124,7 +124,7 @@ class Read extends Model
     {
         $o = new \App\Models\CatsPandC();
         $catsArr = $o->getFlattenedHier();
-        echo printR($catsArr);
+        //echo printR($catsArr);
         $r = self::processChildrenCategories($catsArr, $catsId);
 //        echo "<hr>";
 //        echo printR($r);
@@ -209,9 +209,17 @@ class Read extends Model
                   ORDER BY sm.created_at DESC 
                   LIMIT $limit OFFSET $offset";
             $r = \DB::select($q, array());
-            $itemsArr[$key]->social_media = $r;
+            if (count($r) > 0) {
+                $itemsArr[$key]->social_media = $r;
+            } else {
+                // don't display them if they have only an account but no social media content
+                unset($itemsArr[$key]);
+            }
 
         }
+
+        // reset keys to start at 0
+        $itemsArr = array_values($itemsArr);
 
         return $itemsArr;
 
