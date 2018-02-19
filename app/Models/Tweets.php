@@ -156,7 +156,7 @@ class Tweets extends Model
         foreach($mediaArr as $shortUrl => $obj) {
             $expandedUrl = $obj->expanded_url;
             $mediaUrl = $obj->media_url;
-            $thumb = "<img src='" . $mediaUrl . ":thumb' width='150' height='150'>";
+            $thumb = "<img src='" . $mediaUrl . ":thumb' class='socialMediaThumb'>";
             $replace = "<a target='_blank' href='$expandedUrl'>$thumb</a>";
             if ($count == 0) {
                 $replace = "<a class='firstImage' target='_blank' href='$expandedUrl'>$thumb</a>";
@@ -177,6 +177,7 @@ class Tweets extends Model
         }
         foreach($urlsArr as $short => $full) {
             $domain = parse_url($full, PHP_URL_HOST);
+            $domain = str_replace("www.", "", $domain);
             $obj->text = str_replace($short, "<a target='_blank' href='$full'>$domain</a>", $obj->text);
         }
         return $obj;

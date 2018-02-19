@@ -19,19 +19,25 @@ class ReadController extends Controller
     public function __invoke(Request $request)
     {
 
-        $o = new \App\Models\CatsPandC();
+        $request->validate([
+            'cats_id' => 'nullable|integer',
+            'items_id' => 'nullable|integer'
+        ]);
 
+        $itemsId = !empty($request->items_id) ? $request->items_id : false;
+        $catsId = !empty($request->cats_id) ? $request->cats_id : false;
 
-        //$x = $o->getFlattenedHier();
 
 //\DB::enableQueryLog();
 //dd(\DB::getQueryLog());
 //echo printR($x);
 //$catsId = $request->cats_id;
-$catsId = 4;
+//$catsId = 1;
 //$itemsId = 16;
+
+// number of social media entities per item. eg. 20 tweets by thebrigvenice
 $offset = 1;
-$limit = 3;
+$limit = 20;
 
 
 
@@ -58,12 +64,15 @@ $limit = 3;
                 // get items of single category
                 $itemsArr = Read::getItemsArrWithCatsId($r);
                 $itemsArr = Read::getSocialMediaWithItemsArr($itemsArr, $offset, $limit);
+                if (empty($itemsArr)) {
+                    return;
+                }
                 //echo printR($itemsArr);
                 $catTitleArr = \DB::table('cats')->where('id', $catsId)->pluck('title');
                 if (empty($catTitleArr)) {
                     return;
                 }
-                $cat = strtolower(str_replace(" ", "_", $catTitleArr[0]));
+                $cat = strtolower(preg_replace("~[^a-z0-9]+~is", "", $catTitleArr[0]));
                 error_reporting(E_ALL);
 
 

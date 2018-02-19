@@ -41,7 +41,10 @@ class TwitterController extends Controller
      */
     public function store(Request $request)
     {
-
+        \DB::enableQueryLog();
+        $twitterObj = new Tweets();
+        $r = $twitterObj->getFeed();
+        $twitterObj->convertTweetsToSocialMedia();
     }
 
     /**

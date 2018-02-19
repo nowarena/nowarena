@@ -112,7 +112,7 @@ class CatsController extends Controller
             $uniqueTitleValidation = '|unique:cats';
         }
         $request->validate([
-            'title' => 'required|min:3|max:30|regex:/^[a-zA-Z0-9_ -]+$/' . $uniqueTitleValidation,
+            'title' => 'required|min:3|max:30|regex:/^[a-zA-Z0-9_,& -]+$/' . $uniqueTitleValidation,
             'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/',
             'child_cats_id_add' => 'nullable|integer',
             'parent_cats_id' => 'nullable|integer',
