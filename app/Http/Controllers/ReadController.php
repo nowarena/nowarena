@@ -32,11 +32,11 @@ class ReadController extends Controller
 //dd(\DB::getQueryLog());
 //echo printR($x);
 //$catsId = $request->cats_id;
-//$catsId = 1;
+//$catsId = 6;
 //$itemsId = 16;
 
 // number of social media entities per item. eg. 20 tweets by thebrigvenice
-$offset = 1;
+$offset = 0;
 $limit = 20;
 
 
@@ -74,9 +74,14 @@ $limit = 20;
                 }
                 $cat = strtolower(preg_replace("~[^a-z0-9]+~is", "", $catTitleArr[0]));
                 error_reporting(E_ALL);
+                $itemsIdDisplayOrderArr = array_keys($itemsArr);
+                echo printR($itemsArr);
 
-
-                file_put_contents("/var/www/html/json/" . $cat . ".json", json_encode($itemsArr));
+                $itemsJson = json_encode($itemsArr);
+                $filename = "/var/www/html/json/" . $cat . ".json";
+                echo $filename."\n";
+                echo $itemsJson;
+                file_put_contents($filename, $itemsJson);
                 return;
             } else {
                 // no children of cats_id

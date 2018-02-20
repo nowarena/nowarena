@@ -22,7 +22,7 @@ class Read extends Model
     {
         $dataArr = [];
         $parentCatsArr = self::getParentOnlyCats();
-        echo __METHOD__ . printR($parentCatsArr);
+        //echo __METHOD__ . printR($parentCatsArr);
         foreach($parentCatsArr as $obj) {
             $dataArr[$obj->id]['title'] = $obj->title;
             $dataArr[$obj->id]['cats_id'] = $obj->id;
@@ -89,7 +89,7 @@ class Read extends Model
               INNER JOIN cats_p_and_c ON cats.id = cats_p_and_c.child_id
               AND cats_p_and_c.parent_id = ?";
         $r = \DB::select($q, [$id]);
-        echo preg_replace("~ = \?~s", " = $id", $q) . ";<br>";
+        //echo preg_replace("~ = \?~s", " = $id", $q) . ";<br>";
         //echo $q."|$id|<br>";
         return $r;
     }
@@ -180,6 +180,11 @@ class Read extends Model
               WHERE cats_id = ?";
         $r = \DB::select($q, [$catsId]);
         return $r;
+//        $newArr = [];
+//        foreach($r as $obj) {
+//            $newArr[$obj->items_id] = $obj->title;
+//        }
+//        return $newArr;
     }
 
     public static function getItemsArrWithItemsId($itemsId)
@@ -195,33 +200,73 @@ class Read extends Model
     public static function getSocialMediaWithItemsArr($itemsArr, $offset = 0, $limit = 3)
     {
 
+        $dbArr = self::qSocialMediaWithItemsArr($itemsArr, $offset, $limit);
+        $finalItemsArr = self::sortFinalItemsArr($itemsArr, $dbArr);
+
+        return $finalItemsArr;
+
+    }
+
+    public static function qSocialMediaWithItemsArr($itemsArr, $offset, $limit)
+    {
+
         //$itemsIdArr = array_filter(array_map(function($n) { return $n->items_id; }, $itemsArr));
         if (count($itemsArr) == 0) {
             return false;
         }
         //echo __METHOD__ . printR($itemsArr);
+
+        $dbArr = [];
         foreach($itemsArr as $key => $obj) {
-            $q = "SELECT * FROM social_media sm 
+            $q = "SELECT sm.*, UNIX_TIMESTAMP(sm.created_at) as created_at_ut, sma.items_id, sma.username, sma.avatar, sma.site  
+                  FROM social_media sm 
                   INNER JOIN social_media_accounts sma on sma.source_user_id = sm.source_user_id 
                   WHERE 1 =1 
-                  AND sma.items_id IN (" . $obj->items_id . ") 
+                  AND sma.items_id = ?  
                   AND is_active = 1  
                   ORDER BY sm.created_at DESC 
                   LIMIT $limit OFFSET $offset";
-            $r = \DB::select($q, array());
-            if (count($r) > 0) {
-                $itemsArr[$key]->social_media = $r;
-            } else {
-                // don't display them if they have only an account but no social media content
-                unset($itemsArr[$key]);
+            $r = \DB::select($q, array($obj->items_id));
+            if (count($r)) {
+                $dbArr[] = $r;
             }
 
         }
 
-        // reset keys to start at 0
-        $itemsArr = array_values($itemsArr);
+        return $dbArr;
 
-        return $itemsArr;
+    }
+
+    private static function sortFinalItemsArr($itemsArr, $dbArr)
+    {
+
+        $sortArr = [];
+        $newItemsArr = [];
+        foreach($itemsArr as $itemObj) {
+            foreach($dbArr as $dbRow) {
+                if ($dbRow[0]->items_id == $itemObj->items_id) {
+                    $newItemsArr[$itemObj->items_id] = $itemObj;
+                    $newItemsArr[$itemObj->items_id]->social_media = $dbRow;
+                    $sortArr[$itemObj->items_id] = strtotime($dbRow[0]->created_at);
+                    break;
+                }
+            }
+        }
+
+
+        $finalItemsArr = [];
+        if (!empty($sortArr)) {
+            arsort($sortArr);
+            echo printR($sortArr);
+            foreach($sortArr as $ut) { echo date("Y-M-d H:i:s", $ut)."<br>";}
+            foreach($sortArr as $itemsId => $ut) {
+                $finalItemsArr[$itemsId] = $newItemsArr[$itemsId];
+            }
+        } else {
+            $finalItemsArr = $newItemsArr;
+        }
+
+        return $finalItemsArr;
 
     }
 
