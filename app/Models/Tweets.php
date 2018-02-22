@@ -76,7 +76,6 @@ class Tweets extends Model
 
         $objArr = [];
         foreach($tweetsArr as $tweetObj) {
-
             $date = date("Y-m-d H:i:s", strtotime($tweetObj->created_at));
             $arr = [
                 'id' => $tweetObj->id,
@@ -89,11 +88,8 @@ class Tweets extends Model
                 'in_reply_to_user_id' => $tweetObj->in_reply_to_user_id,
                 'created_at' => $date
             ];
-
             $objArr[] = Tweets::updateOrCreate($arr);
-
         }
-
         echo "Tweets saved: " . count($objArr) . "<br>";
 
     }
@@ -157,7 +153,7 @@ class Tweets extends Model
             $expandedUrl = $obj->expanded_url;
             $mediaUrl = $obj->media_url;
             $thumb = "<img src='" . $mediaUrl . ":thumb' class='socialMediaThumb'>";
-            $replace = "<a target='_blank' href='$expandedUrl'>$thumb</a>";
+            $replace = "<a class='imageThumbLink' target='_blank' href='$expandedUrl'>$thumb</a>";
             if ($count == 0) {
                 $replace = "<a class='firstImage' target='_blank' href='$expandedUrl'>$thumb</a>";
             }
@@ -194,7 +190,7 @@ class Tweets extends Model
             return $obj;
         }
         foreach($arr[0] as $match) {
-            $replaceWith = "<a target='_blank' href='https://twitter.com/hashtag/" . str_replace("#", "", $match) . "'>";
+            $replaceWith = "<a class='hashtagLink' target='_blank' href='https://twitter.com/hashtag/" . str_replace("#", "", $match) . "'>";
             $replaceWith.= $match . "</a>";
             $obj->text = preg_replace("~" . $match . "~is", $replaceWith, $obj->text);
         }
@@ -213,7 +209,7 @@ class Tweets extends Model
             return $obj;
         }
         foreach($arr[0] as $match) {
-            $replaceWith = "<a target='_blank' href='https://twitter.com/" . str_replace("@", "", $match) . "'>$match</a>";
+            $replaceWith = "<a class='atLink' target='_blank' href='https://twitter.com/" . str_replace("@", "", $match) . "'>$match</a>";
             $obj->text = preg_replace("~" . $match . "~is", $replaceWith, $obj->text);
         }
         return $obj;
@@ -233,9 +229,9 @@ class Tweets extends Model
 
     private function getMediaJson($tweetObj)
     {
-        $mediaJson = '';
+
         if (empty($tweetObj->entities->media)) {
-            return $mediaJson;
+            return '';
         }
         $mediaArr = [];
         foreach($tweetObj->entities->media as $mediaObj) {
@@ -255,9 +251,9 @@ class Tweets extends Model
 
     private function getUrlsJson($tweetObj)
     {
-        $urlsJson = '';
+
         if (empty($tweetObj->entities->urls)) {
-            return $urlsJson;
+            return '';
         }
         $urlsArr = [];
         foreach($tweetObj->entities->urls as $urlObj) {
