@@ -77,7 +77,7 @@ function getName($catId, $catsCollArr, $html = '') {
         if ($id == $catId) {
             $out = "<div class='catTitle'>";
             $out.= !empty($html) ? $html . " " : '';
-            $out.= "$title</div>";
+            $out.= "$id $title</div>";
             return $out;
             return $id . " " . $title;
         }

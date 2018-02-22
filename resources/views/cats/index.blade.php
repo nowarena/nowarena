@@ -159,8 +159,9 @@
 
 @php
 echo "<pre>";
-print_r($parentChildHierArr);
+
 print_r(DB::getQueryLog());
+echo "sort search\n";
 print_r([$sort, $search]);
 echo "</pre>";
 @endphp

@@ -32,6 +32,7 @@ class ItemsController extends Controller
         //$r = dd( \DB::getQueryLog() );
         //$socialMediaAccountsColl = $socialMediaAccountsObj->all()->sortByDesc('title');
         $socialMediaAccountsColl = SocialMediaAccounts::orderBy('username', 'asc')->get();
+        $catsArr = DB::table('cats')->select()->pluck('title', 'id')->toArray();
         //echo printR($socialMediaAccountsColl);
         //echo printR($socialMediaAssocAccountsArr);
         //exit;
@@ -39,7 +40,7 @@ class ItemsController extends Controller
         $sort = $request->sort;
         return view(
             'items.listsocialmediaaccounts',
-            compact('itemsColl', 'sort', 'search', 'socialMediaAssocAccountsArr', 'socialMediaAccountsColl')
+            compact('itemsColl', 'sort', 'search', 'socialMediaAssocAccountsArr', 'socialMediaAccountsColl', 'catsArr')
         );
     }
 
@@ -106,11 +107,18 @@ class ItemsController extends Controller
      */
     public function index(Request $request)
     {
-        //DB::enableQueryLog();
+        DB::enableQueryLog();
+
+
+        //$o = \App\Models\Items::with(['cats','itemscats'])->where('id','=', 4 )->get();
+        //echo printR($o);return;
 
         $itemsObj = new Items();
+        $searchCatsId = 0;
+        if (!empty($request->cats_id)) {
+            $searchCatsId = $request->cats_id;
+        }
         $itemsColl = $itemsObj->getItemsColl($request, 3);
-
         $itemsCatsObj = new ItemsCats();
         $itemsCatsColl = $itemsCatsObj->getItemsCats($itemsColl, $itemsObj);
 
@@ -121,7 +129,7 @@ class ItemsController extends Controller
         $itemsCatsArr = array();
         $itemsArr = [];
 
-        $catsArr = DB::table('cats')->select()->pluck('title', 'id');
+        $catsArr = DB::table('cats')->select()->pluck('title', 'id')->toArray();
 
         $catsPandCObj = new CatsPandC();
         $catsObj = new Cats();
@@ -136,7 +144,7 @@ class ItemsController extends Controller
 
         return view(
             'items.index',
-            compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl', 'parentChildHierArr', 'parentChildFlattenedArr', 'catsCollArr', 'socialMediaAssocAccountsArr')
+            compact('itemsColl', 'sort', 'search', 'catsArr', 'itemsArr', 'itemsCatsArr', 'itemsCatsColl', 'parentChildHierArr', 'parentChildFlattenedArr', 'catsCollArr', 'socialMediaAssocAccountsArr', 'searchCatsId')
         );
     }
 

@@ -8,6 +8,13 @@ class Cats extends Model
 {
     protected $fillable = ['title', 'description'];
 
+    protected $table = 'cats';
+
+    public function items()
+    {
+        return $this->hasMany('App\Models\Items');
+    }
+
 
     /*
      * @return \Illuminate\Pagination\LengthAwarePaginator

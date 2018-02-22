@@ -19,7 +19,7 @@ declare -a arr=(1 3 4 5 6 9 10 11 12 13)
 #wget -q --spider http://dev.nowarena.com//twitter/getfeed
 
 for i in ${arr[@]}; do
-    wget -q --spider http://dev.nowarena.com/read?cats_id=$i
+    wget http://dev.nowarena.com/read?cats_id=$i 2>&1 >> /tmp/gettweets.log
     echo $?
     echo $i
     printf "\n"

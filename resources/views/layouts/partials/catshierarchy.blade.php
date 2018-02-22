@@ -1,6 +1,6 @@
 @php
 
-echo "<pre>";print_r($parentChildFlattenedArr);echo "</pre>";
+//echo "<pre>";print_r($parentChildFlattenedArr);echo "</pre>";
 
 displayCats($parentChildFlattenedArr, $catsCollArr);
 

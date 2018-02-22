@@ -8,6 +8,13 @@ class ItemsCats extends Model
 {
     protected $fillable = ['cats_id', 'items_id'];
 
+    protected $table = 'items_cats';
+
+    public function items()
+    {
+        return $this->hasMany('App\Models\Items');
+    }
+
     public function getItemsCats($itemsColl, $itemsObj)
     {
         $itemsIdArr = $itemsObj->getIdArrFromColl($itemsColl);

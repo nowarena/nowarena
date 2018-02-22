@@ -26,7 +26,9 @@
     <!--h2 class="sectionTitle">Edit</h2-->
 
     @include('items.partials.search', [
-        'search' => $search
+        'search' => $search,
+        'catsArr' => $catsArr,
+        'searchCatsId' => $searchCatsId
     ])
 
     <div style="clear:both;"></div>
