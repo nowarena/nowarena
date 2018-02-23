@@ -51,6 +51,11 @@ return [
         'client_secret' => env('TW_SECRET'),
         'redirect'      => env('TW_REDIRECT'),
     ],
+    'yelp' => [
+        'client_id'     => env('CLIENT_ID'),
+        'client_secret' => env('CLIENT_SECRET'),
+        'api_key'      => env('API_KEY'),
+    ],
 //
 //    'google' => [
 //        'client_id'     => env('GOOGLE_ID'),

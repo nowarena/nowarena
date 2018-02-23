@@ -169,3 +169,5 @@ Route::get('/twitter/store', 'TwitterController@store')->name('twitter.store');
 Route::get('/twitter/getfriends', 'TwitterController@show')->name('twitter.show');
 
 Route::get("read", "ReadController");
+
+Route::resource('yelp', 'YelpController');
