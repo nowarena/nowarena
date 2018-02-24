@@ -34,16 +34,11 @@ class Items extends Model
         $items = new Items();
         if (!empty($request->cats_id)) {
 
-            $items->select('*' )
-                ->join('items_cats', 'items_cats.items_id', '=', 'items.id')
-                ->join('cats', 'cats.id', '=', 'items_cats.cats_id')
-                ->where("cats.id", '=', $request->cats_id)
-                ->where('items_cats.cats_id', '=', $request->cats_id);
+            $q = "SELECT items_id FROM items_cats WHERE cats_id = ?";
+            $r = \DB::select($q, [$request->cats_id]);
+            $itemsIdArr = array_column($r, 'items_id');
+            $items = $items->whereIn('id', $itemsIdArr);//->get();
 
-//            $q = "SELECT items.id, items.title FROM items  LEFT JOIN items_cats ON items.id = items_cats.items_id LEFT JOIN cats ON cats.id = items_cats.cats_id WHERE items_cats.cats_id = ?";
-//
-//            $items = \DB::select($q, [$request->cats_id]);
-//            echo printR($items);exit;
         }
         if ($sort == 'old') {
             $items = $items->orderBy('items.created_at', 'asc');

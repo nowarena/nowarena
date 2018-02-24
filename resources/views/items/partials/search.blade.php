@@ -33,19 +33,19 @@ echo '<ul style="padding-left:20px;margin-top:20px;" class="nav nav-pills">';
 echo '<li class="nav-item" style="margin-left:10px;margin-top:10px;font-weight:bold;">Sort:</li>';
 
 echo '<li class="nav-item">';
-echo '<a class="nav-link ' . $descActive . '" href="?sort=desc' . $searchQStr . '">Desc</a>';
+echo '<a class="nav-link ' . $descActive . '" href="?sort=desc&cats_id=' . $searchCatsId . '&' . $searchQStr . '">Desc</a>';
 echo '</li>';
 
 echo '<li class="nav-item">';
-echo '<a class="nav-link ' . $ascActive . '" href="?sort=asc' . $searchQStr . '">Asc</a>';
+echo '<a class="nav-link ' . $ascActive . '" href="?sort=asc&cats_id=' . $searchCatsId . '&' . $searchQStr . '">Asc</a>';
 echo '</li>';
 
 echo '<li class="nav-item">';
-echo '<a class="nav-link ' . $newActive . '" href="?sort=new' . $searchQStr . '">Newest</a>';
+echo '<a class="nav-link ' . $newActive . '" href="?sort=new&cats_id=' . $searchCatsId . '&' . $searchQStr . '">Newest</a>';
 echo '</li>';
 
 echo '<li class="nav-item">';
-echo '<a class="nav-link ' . $oldActive . '" href="?sort=old' . $searchQStr . '">First</a>';
+echo '<a class="nav-link ' . $oldActive . '" href="?sort=old&cats_id=' . $searchCatsId . '&' . $searchQStr . '">First</a>';
 echo '</li>';
 
 

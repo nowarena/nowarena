@@ -35,10 +35,9 @@
     margin-left:-10px;
 }
 .itemTitle {
-    width:150px;
-    display:inline-block;
+
     font-weight:bold;
-    float:left;
+    clear:both;
 
 }
 .accountRemove {
@@ -53,13 +52,15 @@
     width:200px;
     margin-top:2px;
 }
-.isPrimary, .isActive, .useAvatar, .submitBtn {
+.isPrimary, .isActive, .useAvatar {
     float:left;
     width:100px;
     text-align:center;
 }
 .submitBtn {
-    padding-top:4px;
+    float:right;
+    text-align:center;
+    margin-left:2px;
 }
 .socialAccountAvatar {
     width:50px;
@@ -69,9 +70,16 @@
     margin:2px;
 }
 .socialMediaRow {
-    height:60px;
+
     border-bottom:1px solid black;
+    margin-bottom:10px;
 }
 /*.catRow:nth-child(even) {background: #CCC}*/
 /*.catRow:nth-child(odd) {background: #000000}*/
+
+.socialSiteName {
+    width:200px;
+    margin:2px;
+    float:left;
+}
 

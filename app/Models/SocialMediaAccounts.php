@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SocialMediaAccounts extends Model
 {
-    protected $fillable = ['items_id', 'source_user_id', 'username', 'site', 'is_active', 'is_primary', 'use_avatar'];
+    protected $fillable = ['items_id', 'source_user_id', 'username', 'site', 'is_active', 'is_primary', 'use_avatar','avatar'];
 
 
     /*
@@ -50,12 +50,12 @@ class SocialMediaAccounts extends Model
             $isPrimary = !empty($request->is_primary) ? $request->is_primary : 0;
             $useAvatar = !empty($request->use_avatar) ? $request->use_avatar : 0;
             $q = "UPDATE social_media_accounts 
-                  SET is_active = ?, is_primary = ?, use_avatar = ?  
+                  SET is_active = ?, is_primary = ?, use_avatar = ?, avatar = ?   
                   WHERE 1 = 1 
                   AND source_user_id = ? 
                   AND site = ? 
                   AND items_id = ?";
-            \DB::update($q, [$isActive, $isPrimary, $useAvatar, $request->source_user_id, $request->site, $request->items_id]);
+            \DB::update($q, [$isActive, $isPrimary, $useAvatar, $request->avatar,  $request->source_user_id, $request->site, $request->items_id]);
             //$r = dd( \DB::getQueryLog() );
 
         }

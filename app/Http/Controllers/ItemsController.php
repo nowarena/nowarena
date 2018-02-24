@@ -33,6 +33,10 @@ class ItemsController extends Controller
         //$socialMediaAccountsColl = $socialMediaAccountsObj->all()->sortByDesc('title');
         $socialMediaAccountsColl = SocialMediaAccounts::orderBy('username', 'asc')->get();
         $catsArr = DB::table('cats')->select()->pluck('title', 'id')->toArray();
+        $searchCatsId = 0;
+        if (!empty($request->cats_id)) {
+            $searchCatsId = $request->cats_id;
+        }
         //echo printR($socialMediaAccountsColl);
         //echo printR($socialMediaAssocAccountsArr);
         //exit;
@@ -40,15 +44,37 @@ class ItemsController extends Controller
         $sort = $request->sort;
         return view(
             'items.listsocialmediaaccounts',
-            compact('itemsColl', 'sort', 'search', 'socialMediaAssocAccountsArr', 'socialMediaAccountsColl', 'catsArr')
+            compact('itemsColl', 'sort', 'search', 'socialMediaAssocAccountsArr', 'socialMediaAccountsColl', 'catsArr', 'searchCatsId')
         );
     }
 
     /*
      * 'updatesocialmediaaccounts' web route using 'edit'
      */
-    public function updatesocialmediaaccounts(Request $request, Items $items)
+    public function updatesocialmediaaccounts(Request $request)
     {
+
+        // TODO validation
+//        $request->validate([
+//            'title' => "required|min:3|unique:items|max:30|regex:/^[a-zA-Z0-9_ -']+$/",
+//            'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/'
+//        ]);
+
+        if ($request->action == 'add') {
+            $arr = [
+                'source_user_id' => $request->source_user_id,
+                'username' => $request->username,
+                'site' => $request->site,
+                'is_active' => $request->is_active,
+                'is_primary' => $request->is_primary,
+                'use_avatar' => $request->use_avatar,
+                'avatar' => $request->avatar
+            ];
+
+            SocialMediaAccounts::create($arr);
+            return redirect()->route('items.listsocialmediaaccounts', array('search' => $request->username));
+        }
+
         //\DB::enableQueryLog();
         SocialMediaAccounts::updateRow($request);
 
@@ -110,8 +136,8 @@ class ItemsController extends Controller
         DB::enableQueryLog();
 
 
-        //$o = \App\Models\Items::with(['cats','itemscats'])->where('id','=', 4 )->get();
-        //echo printR($o);return;
+//        $o = \App\Models\ItemsCats::with(['items_cats', 'items'])->where('cats_id','=', 4 )->get();
+//        echo printR($o);return;
 
         $itemsObj = new Items();
         $searchCatsId = 0;
@@ -119,6 +145,7 @@ class ItemsController extends Controller
             $searchCatsId = $request->cats_id;
         }
         $itemsColl = $itemsObj->getItemsColl($request, 3);
+
         $itemsCatsObj = new ItemsCats();
         $itemsCatsColl = $itemsCatsObj->getItemsCats($itemsColl, $itemsObj);
 

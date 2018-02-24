@@ -13,20 +13,25 @@ class YelpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $providerKey = Config::get('services.yelp');
         $yelp = new YelpFusion();
         $oauthTokenData = $yelp->getBearerTokenObject($providerKey['client_id'], $providerKey['client_secret']);
         $oauthToken = $oauthTokenData->access_token;
-        var_dump($oauthToken);
 
-        $params = [
-            'id' => 'gjelina-venice-2'
-        ];
+        if ($request->action == 'reviews') {
+            $yelpData = $yelp->bizlookup('gjelina-venice-2', $oauthToken, 1);
+        } elseif ($request->action == 'details') {
+            // phone
+            // avatar aka image_url
+            // address
+            // lat/long
+            // hours
+            $yelpData = $yelp->bizlookup('gjelina-venice-2', $oauthToken, 0);
 
-$yelpData = $yelp->bizlookup('gjelina-venice-2', $oauthToken, 1);
-echo printR($yelpData);
+        }
+        echo printR($yelpData);
         return;
 
     }
@@ -49,7 +54,7 @@ echo printR($yelpData);
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

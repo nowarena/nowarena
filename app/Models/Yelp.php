@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\YelpTrait;
 
-class YelpLocal extends Model
+class Yelp extends Model
 {
     use YelpTrait;
 

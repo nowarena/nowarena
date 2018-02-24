@@ -54,6 +54,7 @@
                     <a class="btn btn-danger" href="{{ route('items.delete', $item, ['page' => $itemsColl->currentPage()] )}}" onclick="return confirm('Really delete?');">Delete</a>
 
                 </div>
+                <div class='td'>{{ $item->id }}</div>
             </div>
             <div style='clear:both;'></div>
             <div class='tr'>
@@ -92,7 +93,7 @@
         @endforeach
     </div>
     <div style='clear:both;'></div>
-    {!! $itemsColl->appends(['sort' => $sort, 'search' => $search])->render() !!}
+    {!! $itemsColl->appends(['sort' => $sort, 'search' => $search, 'cats_id' => $searchCatsId])->render() !!}
 
 {{--<pre>--}}
         {{--{!! $itemsCatsColl !!}--}}

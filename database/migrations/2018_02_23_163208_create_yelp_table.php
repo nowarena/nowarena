@@ -13,8 +13,16 @@ class CreateYelpTable extends Migration
      */
     public function up()
     {
+
+        // phone
+        // avatar aka image_url
+        // address
+        // lat/long
+        // hours
+
         Schema::create('yelp', function (Blueprint $table) {
             $table->increments('id');
+
             $table->timestamps();
         });
     }

@@ -11,8 +11,20 @@ if (count($socialMediaAssocAccountsArr)) {
         if ($obj->items_id == $item->id) {
             $hasAccount = true;
 
+            @endphp
+
+            <form id="form_{{ $item->id }}" action="{{ route('items.updatesocialmediaaccounts', $item) }}" method="get" class='socialMediaRow'>
+            <input type="hidden" name="cats_id" value='{{$searchCatsId}}'>
+            <input type="hidden" name="search" value='{{$search}}'>
+            <input type="hidden" name="on_page" value="{{$itemsColl->currentPage()}}">
+            <input type="hidden" name="items_id" value="{{ $item->id }}">
+            {{ csrf_field() }}
+
+            @php
             echo "<input type='hidden' name='source_user_id' value='" . $obj->source_user_id . "'>";
             echo "<input type='hidden' name='site' value='" . $obj->site . "'>";
+
+            echo "<div class='socialSiteName'>" . $obj->site . "</div>";
 
             echo "<div class='accountRemove'>";
             echo "<input type='checkbox' name='remove' value='1'>" . $obj->username;
@@ -40,8 +52,27 @@ if (count($socialMediaAssocAccountsArr)) {
                 echo "checked";
             }
             echo ">";
-            echo "<img class='socialAccountAvatar' src='" . $obj->avatar . "'>";
+
+            if (!empty($obj->avatar)) {
+                echo "<img class='socialAccountAvatar' src='" . $obj->avatar . "'>";
+            }
+
             echo "</div>";
+
+            echo "<div class='submitBtn'>";
+            echo '<button class="btn btn-primary" name="edit">Submit Edit</button>';
+            echo '</div>';
+            echo "<div style='clear:both;'></div>";
+
+            echo "<div style='margin:2px auto;width:500px;border:0px solid black;'>";
+            echo "<input type='text' style='width:496px;' name='avatar' value='" . $obj->avatar . "'>";
+            echo "</div>";
+
+            echo "<div style='clear:both;'></div>";
+
+            echo '</form>';
+            echo "<div style='clear:both;'></div>";
+
 
         }
     }
