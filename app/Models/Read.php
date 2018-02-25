@@ -200,8 +200,8 @@ class Read extends Model
     public static function getSocialMediaWithItemsArr($itemsArr, $offset = 0, $limit = 3)
     {
 
-        $dbArr = self::qSocialMediaWithItemsArr($itemsArr, $offset, $limit);
-        $finalItemsArr = self::sortFinalItemsArr($itemsArr, $dbArr);
+        $socialMediaDbArr = self::qSocialMediaWithItemsArr($itemsArr, $offset, $limit);
+        $finalItemsArr = self::sortFinalItemsArr($itemsArr, $socialMediaDbArr);
 
         return $finalItemsArr;
 
@@ -218,7 +218,7 @@ class Read extends Model
 
         $dbArr = [];
         foreach($itemsArr as $key => $obj) {
-            $q = "SELECT sm.*, UNIX_TIMESTAMP(sm.created_at) as created_at_ut, sma.items_id, sma.username, sma.avatar, sma.site  
+            $q = "SELECT sm.*, UNIX_TIMESTAMP(sm.created_at) as created_at_ut, sma.items_id, sma.username, sma.avatar, sma.site, sma.use_avatar   
                   FROM social_media sm 
                   INNER JOIN social_media_accounts sma on sma.source_user_id = sm.source_user_id 
                   WHERE 1 =1 
@@ -240,15 +240,18 @@ class Read extends Model
     /*
      * Sort top level array by created_at date of most recent social media item
      */
-    private static function sortFinalItemsArr($itemsArr, $dbArr)
+    private static function sortFinalItemsArr($itemsArr, $socialMediaDbArr)
     {
 
         $sortArr = [];
         $newItemsArr = [];
         foreach($itemsArr as $itemObj) {
-            foreach($dbArr as $dbRow) {
+            foreach($socialMediaDbArr as $dbRow) {
                 if ($dbRow[0]->items_id == $itemObj->items_id) {
                     $newItemsArr[$itemObj->items_id] = $itemObj;
+                    if ($dbRow[0]->use_avatar == 1) {
+                        $newItemsArr[$itemObj->items_id]->avatar = $dbRow[0]->avatar;
+                    }
                     $newItemsArr[$itemObj->items_id]->social_media = $dbRow;
                     $sortArr[$itemObj->items_id] = strtotime($dbRow[0]->created_at);
                     break;
