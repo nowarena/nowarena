@@ -39,7 +39,9 @@ class ReadController extends Controller
 $offset = 0;
 $limit = 20;
 
-
+$catsIdArr = array(1,2,3,4,5,6,7,8,9);
+//$catsIdArr = array(6);
+foreach($catsIdArr as $catsId) {
 
         if (!empty($itemsId)) {
             // get all social media for items_id eg. Dallas Cowboyws
@@ -74,22 +76,22 @@ $limit = 20;
                 }
                 $cat = strtolower(preg_replace("~[^a-z0-9]+~is", "", $catTitleArr[0]));
                 error_reporting(E_ALL);
-                $itemsIdDisplayOrderArr = array_keys($itemsArr);
-                echo printR($itemsArr);
 
                 $itemsJson = json_encode($itemsArr);
                 $filename = "/var/www/html/json/" . $cat . ".json";
                 echo $filename."\n";
-                echo $itemsJson;
+                echo '<pre>';
+                echo json_encode($itemsArr, JSON_PRETTY_PRINT);
+                echo '</pre>';
                 file_put_contents($filename, $itemsJson);
-                return;
+
             } else {
                 // no children of cats_id
                 return;
             }
         }
-
-        //return;
+}
+        return;
 
         //$catsObj = new Cats();
         //$catsCollArr = $catsObj->pluck('title', 'id')->all();

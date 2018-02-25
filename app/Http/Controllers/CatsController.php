@@ -62,7 +62,7 @@ class CatsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|min:3|unique:cats|max:30|regex:/^[a-zA-Z0-9_ -]+$/',
+            'title' => 'required|min:3|unique:cats|max:30|regex:/^[a-zA-Z0-9_ -&]+$/',
             'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/',
             'parent_only' => 'nullable|integer'
         ]);

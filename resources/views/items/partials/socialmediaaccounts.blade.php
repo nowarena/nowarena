@@ -13,9 +13,10 @@ if (count($socialMediaAssocAccountsArr)) {
 
             @endphp
 
-            <form id="form_{{ $item->id }}" action="{{ route('items.updatesocialmediaaccounts', $item) }}" method="get" class='socialMediaRow'>
+            <form action="{{ route('items.updatesocialmediaaccounts', $item) }}" method="get" class='socialMediaRow'>
             <input type="hidden" name="cats_id" value='{{$searchCatsId}}'>
             <input type="hidden" name="search" value='{{$search}}'>
+            <input type="hidden" name="sort" value='{{$sort}}'>
             <input type="hidden" name="on_page" value="{{$itemsColl->currentPage()}}">
             <input type="hidden" name="items_id" value="{{ $item->id }}">
             {{ csrf_field() }}
@@ -78,7 +79,14 @@ if (count($socialMediaAssocAccountsArr)) {
     }
 }
 
-if ($hasAccount == false) {
+if ($search && $socialMediaAccountsColl->count()) {
+
+    $hasMatch = false;
+    echo '<form id="formassoc_' . $item->id . '" action="';
+    @endphp {{ route("items.updatesocialmediaaccounts", $item) }}@php
+    echo '" method="get" class="socialMediaRow">';
+    echo "<input type='hidden' name='items_id' value='" . $item->id . "'>";
+    echo "<input type='hidden' name='search' value='" . $search . "'>";
     echo "<select name='add_source_user_id' class='socialMediaAccountDD'>";
     echo "<option value='0'>Add</option>";
     foreach($socialMediaAccountsColl as $key => $obj) {
@@ -90,12 +98,22 @@ if ($hasAccount == false) {
         if (stristr($obj->username, $item->title) || stristr($item->title, $obj->username)) {
             echo "selected";
         }
-        echo ">" . $obj->username . "</option>";
+        echo ">" . $obj->username . " : " . $obj->site . "</option>";
+        $hasMatch = true;
     }
     echo "</select>";
     echo "<div class='isPrimary'> &nbsp; </div>";
     echo "<div class='isActive'> &nbsp; </div>";
     echo "<div class='useAvatar'> &nbsp; </div>";
+    echo "<div class='submitBtn'>";
+    echo '<button class="btn btn-primary" name="edit">Submit Edit</button>';
+    echo '</div>';
+    echo "<div style='clear:both;'></div>";
+    echo '</form>';
+
+    if ($hasMatch == false) {
+        echo "<style>#formassoc_" . $item->id . "{display:none;}</style>";
+    }
 
 
 }

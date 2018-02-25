@@ -15,33 +15,37 @@
     <h2 class="sectionTitle">Add</h2>
     <div style='clear:both;'></div>
 
-
-        <div style='float:left;'>
+    <div style='width:800px;'>
+        <div class='submitBtn' style='float:right;'>
+            <button class="btn btn-primary" name="edit">Add</button>
+        </div>
+        <div>
         <input type='text' name='source_user_id' placeholder='source_user_id'>
         <input type='text' name='username' placeholder='username'>
-        <input type='text' name='site' placeholder='sitename'>
+        yelp:<input type='checkbox' name='site' value='yelp.com'> |
+        twitter:<input type='checkbox' name='site' value='twitter.com'> |
+         instagram:<input type='checkbox' name='site' value='instagram.com'>
         <input type='hidden' name='action' value='add'>
+        <input type='hidden' name='search' value='{{$search}}'>
 
         <div class='isActive'>
-            <label>Is active: <input type='hidden' name='is_active' value='0'></label>
+            <input type='hidden' name='is_active' value='0'>
         </div>
 
         <div class='isPrimary'>
-            <label>Is primary: <input type='hidden' name='is_primary' value='0'></label>
+            <input type='hidden' name='is_primary' value='0'>
         </div>
 
         <div class='useAvatar'>
-            <label>Use avatar: <input type='hidden' name='use_avatar' value='0'></label>
+            <input type='hidden' name='use_avatar' value='0'>
          </div>
-        <div style='text-align:center;margin-top:2px;'>
+        <div style='margin:2px 0px 2px 0px;'>
             <input size=100 type='text' name='avatar' placeholder='avatar url'>
         </div>
 
         <div style='clear:both;'></div>
 
         </div>
-    <div class='submitBtn' style='float:left;'>
-        <button class="btn btn-primary" name="edit">Add</button>
     </div>
 
 

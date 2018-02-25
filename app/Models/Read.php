@@ -237,6 +237,9 @@ class Read extends Model
 
     }
 
+    /*
+     * Sort top level array by created_at date of most recent social media item
+     */
     private static function sortFinalItemsArr($itemsArr, $dbArr)
     {
 
@@ -257,10 +260,13 @@ class Read extends Model
         $finalItemsArr = [];
         if (!empty($sortArr)) {
             arsort($sortArr);
-            echo printR($sortArr);
-            foreach($sortArr as $ut) { echo date("Y-M-d H:i:s", $ut)."<br>";}
+            //echo printR($sortArr);
+            //foreach($sortArr as $ut) { echo date("Y-M-d H:i:s", $ut)."<br>";}
+            $count = 0;
             foreach($sortArr as $itemsId => $ut) {
                 $finalItemsArr[$itemsId] = $newItemsArr[$itemsId];
+                $finalItemsArr[$itemsId]->rank = $count;
+                $count++;
             }
         } else {
             $finalItemsArr = $newItemsArr;

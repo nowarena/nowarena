@@ -37,6 +37,7 @@
             <form class='catRow' id="form_{{ $item->id }}" action="{{ route('items.update', $item) }}" method="post">
             <input type="hidden" name="on_page" value="{{$itemsColl->currentPage()}}">
             <input type="hidden" name="items_id" value="{{ $item->id }}">
+            <input type="hidden" name="cats_id" value="{{ $searchCatsId }}">
             {{ csrf_field() }}
             <div class='tr'>
                 <div class='td'>
@@ -54,7 +55,7 @@
                     <a class="btn btn-danger" href="{{ route('items.delete', $item, ['page' => $itemsColl->currentPage()] )}}" onclick="return confirm('Really delete?');">Delete</a>
 
                 </div>
-                <div class='td'>{{ $item->id }}</div>
+                <div class='td'><a href='/items/listsocialmediaaccounts?search={{$item->title}}'>item id {{ $item->id }}</a></div>
             </div>
             <div style='clear:both;'></div>
             <div class='tr'>

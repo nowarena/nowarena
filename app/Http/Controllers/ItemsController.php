@@ -42,6 +42,7 @@ class ItemsController extends Controller
         //exit;
         $search = $request->search;
         $sort = $request->sort;
+
         return view(
             'items.listsocialmediaaccounts',
             compact('itemsColl', 'sort', 'search', 'socialMediaAssocAccountsArr', 'socialMediaAccountsColl', 'catsArr', 'searchCatsId')
@@ -73,6 +74,7 @@ class ItemsController extends Controller
 
             SocialMediaAccounts::create($arr);
             return redirect()->route('items.listsocialmediaaccounts', array('search' => $request->username));
+
         }
 
         //\DB::enableQueryLog();
@@ -80,12 +82,22 @@ class ItemsController extends Controller
 
         $page = $request->input('on_page');
         if (empty($page)) {
-            $arr = array();
+            $paramArr = array();
         } else {
-            $arr = ['page' => $page];
+            $paramArr = ['page' => $page];
         }
 
-        return redirect()->route('items.listsocialmediaaccounts', $arr);
+        $searchCatsId = 0;
+        if (!empty($request->cats_id)) {
+            $searchCatsId = $request->cats_id;
+        }
+        $search = $request->search;
+        $sort = $request->sort;
+        if (!empty($search) || !empty($sort) || !empty($searchCatsId)) {
+            $paramArr = array('search' => $search, 'sort' => $sort, 'cats_id' => $searchCatsId);
+        }
+
+        return redirect()->route('items.listsocialmediaaccounts', $paramArr);
 
     }
 
@@ -223,11 +235,16 @@ class ItemsController extends Controller
         $items->description = $request->description;
         $items->update();
         $page = $request->input('on_page');
+        $searchCatsId = 0;
+        if (!empty($request->cats_id)) {
+            $searchCatsId = $request->cats_id;
+        }
         if (empty($page)) {
             $arr = array();
         } else {
             $arr = ['page' => $page];
         }
+        $arr['cats_id'] = $searchCatsId;
 
         // update categories
         $request->validate([

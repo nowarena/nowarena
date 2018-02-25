@@ -4,16 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\YelpTrait;
+use Illuminate\Support\Facades\Config;
+
 
 class YelpFusion extends \Neighborhoods\YelpFusion\Yelp
 {
     use YelpTrait;
 
     private $bizLookupEndpoint = 'v3/businesses/';
-
-
+    private $oauthToken;
     protected $fillable = ['biz_id', 'name', 'description'];
 
+    public function __construct()
+    {
+
+        parent::__construct();
+        $providerKey = Config::get('services.yelp');
+        $oauthTokenData = $this->getBearerTokenObject($providerKey['client_id'], $providerKey['client_secret']);
+        $this->oauthToken = $oauthTokenData->access_token;
+    }
 
     /**
      * Get biz using yelp biz id
@@ -41,6 +50,9 @@ class YelpFusion extends \Neighborhoods\YelpFusion\Yelp
         );
     }
 
-
+    public function getOauthToken()
+    {
+        return $this->oauthToken;
+    }
 
 }

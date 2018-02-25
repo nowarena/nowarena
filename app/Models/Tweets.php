@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use \DB;
 
 
-class Tweets extends Model
+class Tweets extends Feed
 {
     protected $fillable = ['id', 'user_id', 'site', 'screen_name', 'text', 'urls', 'media', 'in_reply_to_status_id', 'in_reply_to_user_id', 'created_at'];
 
@@ -97,11 +97,11 @@ class Tweets extends Model
     /*
      * Convert short urls to full, add hyperlinks to @ and #, convert smart quotes, etc
      */
-    public function convertTweetsToSocialMedia()
+    public function convertFeedToSocialMedia()
     {
 
         $objArr = [];
-        $r = $this->getUnconvertedTweets();
+        $r = $this->getUnconvertedFeed();
         foreach($r as $tweetDBObj) {
             //echo "\nBEFORE:".printR($tweetDBObj);
             $tweetDBObj->text = Utility::cleanText($tweetDBObj->text);
@@ -113,11 +113,11 @@ class Tweets extends Model
             //echo "\nAFTER: " . printR($tweetDBObj);            echo "<hr>\n<br>";
             $objArr[] = $tweetDBObj;
         }
-        $this->saveConvertedTweetsToSocialMedia($objArr);
+        $this->saveConvertedFeedToSocialMedia($objArr);
 
     }
 
-    private function saveConvertedTweetsToSocialMedia($objArr)
+    private function saveConvertedFeedToSocialMedia($objArr)
     {
         if (!count($objArr)) {
             return;
@@ -129,7 +129,8 @@ class Tweets extends Model
                 'username' => $obj->screen_name,
                 'site' => 'twitter.com',
                 'link' => 'https://twitter.com/' . $obj->screen_name . '/status/' . $obj->id,
-                'text' => iconv("UTF-8", "UTF-8//IGNORE", $obj->text)
+                'text' => iconv("UTF-8", "UTF-8//IGNORE", $obj->text),
+                'created_at' => $obj->created_at
             ];
             $objArr[] = SocialMedia::updateOrCreate($arr);
         }
@@ -215,7 +216,7 @@ class Tweets extends Model
         return $obj;
     }
 
-    private function getUnconvertedTweets()
+    public function getUnconvertedFeed()
     {
         $q = "SELECT tweets.* FROM tweets
               LEFT JOIN
