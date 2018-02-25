@@ -17,23 +17,12 @@ class YelpController extends Controller
     public function index(Request $request)
     {
 
+        $yelpObj = new Yelp();
         if ($request->action == 'reviews') {
-
-            $yelpObj = new Yelp();
-
-            \DB::enableQueryLog();
-            $r = $yelpObj->getFeed();
+            $yelpObj->getFeed();
             $r = $yelpObj->convertFeedToSocialMedia();
-
-        } elseif ($request->action == 'details') {
-            // phone
-            // avatar aka image_url
-            // address
-            // lat/long
-            // hours
-           // $yelpObj = $yelp->bizlookup('gjelina-venice-2', $oauthToken, 0);
-
-
+        } elseif ($request->action == 'contactinfo') {
+            $r = $yelpObj->updateContactInfo();
         }
         echo printR($r);
         return;

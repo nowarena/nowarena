@@ -40,7 +40,7 @@ $offset = 0;
 $limit = 20;
 
 $catsIdArr = array(1,2,3,4,5,6,7,8,9);
-//$catsIdArr = array(6);
+//$catsIdArr = array(8);
 foreach($catsIdArr as $catsId) {
 
         if (!empty($itemsId)) {
@@ -59,13 +59,12 @@ foreach($catsIdArr as $catsId) {
         } else {
             // get all children, if any, of cats_id
             $r = Read::getChildrenCategories($catsId);
-            //echo "child cats:";
-            //echo printR($r);
             // if there are no children and $r is a scalar, then get items under $catsId
             if (!is_array($r) && $r !== false) {
                 // get items of single category
                 $itemsArr = Read::getItemsArrWithCatsId($r);
                 $itemsArr = Read::getSocialMediaWithItemsArr($itemsArr, $offset, $limit);
+                $itemsArr = Read::getContactInfo($itemsArr);
                 if (empty($itemsArr)) {
                     return;
                 }

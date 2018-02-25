@@ -7,6 +7,46 @@ use Illuminate\Database\Eloquent\Model;
 class Read extends Model
 {
 
+    public static function getContactInfo($itemsArr)
+    {
+
+        foreach($itemsArr as $itemsId => $arr) {
+            $q = "SELECT * FROM contact_info WHERE items_id = ?";
+            $r = \DB::select($q, [$itemsId]);
+            if (isset($r[0]) && count($r[0])) {
+                $r = $r[0];
+                $itemsArr[$itemsId]->website = $r->website;
+                $itemsArr[$itemsId]->address = self::formatAddress($r);
+                $itemsArr[$itemsId]->lat = $r->lat;
+                $itemsArr[$itemsId]->lon = $r->lon;
+                $itemsArr[$itemsId]->phone = $r->phone_number;
+                $hoursObj = json_decode($r->hours);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $hoursObj = '';
+                }
+                $itemsArr[$itemsId]->hours = $hoursObj;
+            }
+        }
+
+        return $itemsArr;
+
+    }
+
+    private static function formatAddress($obj)
+    {
+
+        $str = '';
+        if (!empty($obj->address)) {
+            $str.= $obj->address;
+        }
+        if (!empty($obj->address2)) {
+            $str.=", " . $obj->postal_code;
+        }
+
+        return $str;
+
+    }
+
     /*
      * Array(
         [1] => Array        (
@@ -22,15 +62,9 @@ class Read extends Model
     {
         $dataArr = [];
         $parentCatsArr = self::getParentOnlyCats();
-        //echo __METHOD__ . printR($parentCatsArr);
         foreach($parentCatsArr as $obj) {
             $dataArr[$obj->id]['title'] = $obj->title;
             $dataArr[$obj->id]['cats_id'] = $obj->id;
-            //$dataArr = self::getItems($obj, $dataArr);
-            //$childrenArr = self::getChildren($obj, $dataArr[$obj->id]);
-            //if (count($childrenArr)) {
-            //    $dataArr[$obj->id]['children'] = $childrenArr;
-            //}
         }
         return $dataArr;
     }
@@ -42,7 +76,7 @@ class Read extends Model
               AND cats_p_and_c.parent_id = ? 
               ";
         $r = \DB::select($q, [$id]);
-        echo preg_replace("~ = \?~", " = $id", $q) . ";<br>";
+        //echo preg_replace("~ = \?~", " = $id", $q) . ";<br>";
         //echo $q."|$id|<br>";
         return $r;
     }
@@ -89,8 +123,7 @@ class Read extends Model
               INNER JOIN cats_p_and_c ON cats.id = cats_p_and_c.child_id
               AND cats_p_and_c.parent_id = ?";
         $r = \DB::select($q, [$id]);
-        //echo preg_replace("~ = \?~s", " = $id", $q) . ";<br>";
-        //echo $q."|$id|<br>";
+
         return $r;
     }
 
@@ -100,7 +133,6 @@ class Read extends Model
               FROM items i
 	          INNER JOIN items_cats ic ON i.id = ic.items_id 
 	          WHERE cats_id = ?";
-        //echo $q."|$id|<br>";
         $r = \DB::select($q, [$id]);
 
         return $r;
@@ -124,11 +156,7 @@ class Read extends Model
     {
         $o = new \App\Models\CatsPandC();
         $catsArr = $o->getFlattenedHier();
-        //echo printR($catsArr);
         $r = self::processChildrenCategories($catsArr, $catsId);
-//        echo "<hr>";
-//        echo printR($r);
-//        echo "<hr>";
         return $r;
     }
 
@@ -180,16 +208,10 @@ class Read extends Model
               WHERE cats_id = ?";
         $r = \DB::select($q, [$catsId]);
         return $r;
-//        $newArr = [];
-//        foreach($r as $obj) {
-//            $newArr[$obj->items_id] = $obj->title;
-//        }
-//        return $newArr;
     }
 
     public static function getItemsArrWithItemsId($itemsId)
     {
-
         $q = "SELECT id as items_id, title, description  
               FROM items
               WHERE id = ?";
@@ -201,9 +223,9 @@ class Read extends Model
     {
 
         $socialMediaDbArr = self::qSocialMediaWithItemsArr($itemsArr, $offset, $limit);
-        $finalItemsArr = self::sortFinalItemsArr($itemsArr, $socialMediaDbArr);
-
-        return $finalItemsArr;
+        $itemsArr = self::sortFinalItemsArr($itemsArr, $socialMediaDbArr);
+        $itemsArr = self::setAvatar($itemsArr);
+        return $itemsArr;
 
     }
 
@@ -214,13 +236,13 @@ class Read extends Model
         if (count($itemsArr) == 0) {
             return false;
         }
-        //echo __METHOD__ . printR($itemsArr);
 
         $dbArr = [];
         foreach($itemsArr as $key => $obj) {
-            $q = "SELECT sm.*, UNIX_TIMESTAMP(sm.created_at) as created_at_ut, sma.items_id, sma.username, sma.avatar, sma.site, sma.use_avatar   
-                  FROM social_media sm 
-                  INNER JOIN social_media_accounts sma on sma.source_user_id = sm.source_user_id 
+            $q = "SELECT sm.source_id, sm.source_user_id, sm.username, sm.text, sm.link, sm.site, sm.created_at, 
+                  sma.items_id, sma.username, sma.site   
+                  FROM social_media_accounts sma 
+                  INNER JOIN social_media sm on sma.source_user_id = sm.source_user_id 
                   WHERE 1 =1 
                   AND sma.items_id = ?  
                   AND is_active = 1  
@@ -237,34 +259,57 @@ class Read extends Model
 
     }
 
+    public static function setAvatar($itemsArr)
+    {
+        if (empty($itemsArr)) {
+            return $itemsArr;
+        }
+
+        $q = "SELECT avatar, items_id 
+              FROM social_media_accounts 
+              WHERE 1 = 1 
+              AND items_id IN (" . implode(', ', array_keys($itemsArr)) . ") 
+              AND use_avatar = 1";
+        $r = \DB::select($q);
+        if (isset($r[0]) && count($r[0])) {
+            foreach($r as $obj) {
+                $itemsArr[$obj->items_id]->avatar = $obj->avatar;
+            }
+        }
+        return $itemsArr;
+    }
+
     /*
      * Sort top level array by created_at date of most recent social media item
      */
     private static function sortFinalItemsArr($itemsArr, $socialMediaDbArr)
     {
 
+        if (empty($socialMediaDbArr)) {
+            return $itemsArr;
+        }
+
         $sortArr = [];
         $newItemsArr = [];
-        foreach($itemsArr as $itemObj) {
+        foreach($itemsArr as $key => $itemObj) {
+            $itemsId = $itemObj->items_id;
             foreach($socialMediaDbArr as $dbRow) {
-                if ($dbRow[0]->items_id == $itemObj->items_id) {
-                    $newItemsArr[$itemObj->items_id] = $itemObj;
-                    if ($dbRow[0]->use_avatar == 1) {
-                        $newItemsArr[$itemObj->items_id]->avatar = $dbRow[0]->avatar;
-                    }
-                    $newItemsArr[$itemObj->items_id]->social_media = $dbRow;
-                    $sortArr[$itemObj->items_id] = strtotime($dbRow[0]->created_at);
+                // just check the first row and if a match, set all the rows to social_media
+                // and set the first social_media row's created_at into sort array
+                if ($dbRow[0]->items_id == $itemsId && !empty($dbRow[0]->text)) {
+                    $newItemsArr[$itemsId] = $itemObj;
+                    $newItemsArr[$itemsId]->social_media = $dbRow;
+                    $sortArr[$itemsId] = strtotime($dbRow[0]->created_at);
                     break;
                 }
             }
+
         }
 
 
         $finalItemsArr = [];
         if (!empty($sortArr)) {
             arsort($sortArr);
-            //echo printR($sortArr);
-            //foreach($sortArr as $ut) { echo date("Y-M-d H:i:s", $ut)."<br>";}
             $count = 0;
             foreach($sortArr as $itemsId => $ut) {
                 $finalItemsArr[$itemsId] = $newItemsArr[$itemsId];

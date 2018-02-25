@@ -18,8 +18,6 @@ If you are using route model binding and would like the resource controller's me
 
 php artisan make:controller PhotoController --resource --model=Photo
 
-
-
 	// items editor
 // items editor
 Route::get('/items','ItemsController@index')->name('items.index');
@@ -54,9 +52,9 @@ You may also seed your database using the migrate:refresh command, which will al
 
 set user to admin:
 SELECT * FROM nowarena_dev.users;
-select * from role_user where user_id=3;
+select * from role_user where user_id=YOUR USER ID;
 select * from role_user;
-update role_user set role_id=1 where user_id=3;
+update role_user set role_id=1 where user_id=YOUR USER ID;
 
 In /home/matt/PhpstormProjects/nowarena/vendor/jeremykenedy/laravel-logger/src/database/migrations/2017_11_04_103444_create_laravel_logger_activity_table.php change 
 $table->string('route')->nullable();

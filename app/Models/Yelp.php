@@ -17,6 +17,125 @@ class Yelp  extends Feed
 
     public function __construct()
     {
+        $this->yelpFusion = new YelpFusion();
+    }
+
+    public function updateContactInfo()
+    {
+        $savedArr = [];
+        $contactArr = [];
+        $r = SocialMediaAccounts::where('site', '=', 'yelp.com')->get()->toArray();
+        foreach($r as $arr) {
+            $yelpObj = $this->yelpFusion->bizlookup($arr['username'], $this->yelpFusion->getOauthToken(), 0);
+            $contactArr[$arr['items_id']] = $yelpObj;
+            $r = $this->saveContactInfo($contactArr);
+            if (!empty($r)) {
+                $savedArr[] = $r;
+            }
+        }
+        return $savedArr;
+    }
+
+    public function saveContactInfo(array $contactArr)
+    {
+
+        $finalArr = [];
+        foreach($contactArr as $itemsId => $yelpObj) {
+
+            $r = DB::table('contact_info')
+                ->where(function($q) use ($yelpObj, $itemsId) {
+                    $q->where('biz_id', $yelpObj->id)
+                        ->where('items_id', $itemsId);
+                })
+                ->get();
+            if ($r->count()) {
+                continue;
+            }
+
+            $hoursJson = $this->formatHours($yelpObj);
+            $arr = [
+                'biz_id' => $yelpObj->id,
+                'items_id' => $itemsId,
+                'business' => $yelpObj->name,
+                'address' => $yelpObj->location->display_address[0],
+                'address2' => $yelpObj->location->display_address[1],
+                'city' => $yelpObj->location->city,
+                'state' => $yelpObj->location->state,
+                'postal_code' => $yelpObj->location->zip_code,
+                'phone_number' => $yelpObj->phone,
+                'lat' => $yelpObj->coordinates->latitude,
+                'lon' => $yelpObj->coordinates->longitude,
+                'hours' => $hoursJson
+            ];
+
+            DB::table('contact_info')->insert($arr);
+
+            $finalArr[] = $arr;
+
+        }
+
+        return $finalArr;
+
+    }
+
+    private function formatHours($yelpObj)
+    {
+
+        $hoursJson = '';
+        if (isset($yelpObj->hours[0]->open)) {
+            $hoursArr = $yelpObj->hours[0]->open;
+            $formattedHours = [];
+            foreach($hoursArr as $i => $obj) {
+                $day = $this->formatDay($obj->day);
+                $hours = $this->formatTime($obj->start);
+                $end = $this->formatTime($obj->end);
+                if ($end) {
+                    $hours.= " - " . $end;
+                }
+                $formattedHours[$i] = $day . " " . $hours;
+            }
+
+            $hoursJson = json_encode($formattedHours);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $hoursJson = '';
+            }
+        }
+
+        return $hoursJson;
+
+    }
+
+    // 0 to 6, representing day of the week from Monday to Sunday
+    private function formatDay($num)
+    {
+        if ($num == 0) {
+            return "Mon";
+        } else if ($num == 1) {
+            return "Tue";
+        } else if ($num == 2) {
+            return "Wed";
+        } else if ($num == 3) {
+            return "Thu";
+        } else if ($num == 4) {
+            return "Fri";
+        } else if ($num == 5) {
+            return "Sat";
+        } else if ($num == 6) {
+            return "Sun";
+        }
+        return $num;
+    }
+
+    private function formatTime($str)
+    {
+        if ($str == "0000" || empty($str)) {
+            return "";
+        }
+        $hour = substr($str, 0, 2);
+        $min = substr($str, 2, 4);
+        $ut = mktime($hour, $min, 0, date("m"), date("d"), date("Y"));
+        $hour = date("h:i a", $ut);
+        return $hour;
 
     }
 
@@ -114,76 +233,3 @@ class Yelp  extends Feed
 
 
 }
-
-/*
-Array
-(
-    [68] => stdClass Object
-        (
-            [reviews] => Array
-                (
-                    [0] => stdClass Object
-                        (
-                            [id] => cqoDrGf39AwHr72nRZtQKw
-                            [url] => https://www.yelp.com/biz/gjelina-venice-2?hrid=cqoDrGf39AwHr72nRZtQKw&adjust_creative=LCdZAbtdm-RwIyToOI_ZaQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=LCdZAbtdm-RwIyToOI_ZaQ
-                            [text] => General:
-I hesitated to come because of the 3.5 stars, but a friend insisted that I try it out, so I came & am so glad that I did! About an hour long wait...
-                            [rating] => 4
-                            [user] => stdClass Object
-                                (
-                                    [image_url] => https://s3-media2.fl.yelpcdn.com/photo/aQA2opBwV7SDVNJHf2sM5Q/o.jpg
-                                    [name] => Ang L.
-                                )
-
-                            [time_created] => 2018-02-10 17:13:57
-                        )
-
-                    [1] => stdClass Object
-                        (
-                            [id] => xgRYWnWOHvsEj5TkgqjQ5Q
-                            [url] => https://www.yelp.com/biz/gjelina-venice-2?hrid=xgRYWnWOHvsEj5TkgqjQ5Q&adjust_creative=LCdZAbtdm-RwIyToOI_ZaQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=LCdZAbtdm-RwIyToOI_ZaQ
-                            [text] => I've never had a worse experience. My friend has a life threatening allergy and they won't accommodate. Why, oh why, will they not drop the last step of...
-                            [rating] => 1
-                            [user] => stdClass Object
-                                (
-                                    [image_url] => https://s3-media1.fl.yelpcdn.com/photo/YUNqFny8iCFQjC00nx-zSg/o.jpg
-                                    [name] => Matt S.
-                                )
-
-                            [time_created] => 2018-02-20 21:25:16
-                        )
-
-                    [2] => stdClass Object
-                        (
-                            [id] => kZepK8omUBwl4JR7aqGT8g
-                            [url] => https://www.yelp.com/biz/gjelina-venice-2?hrid=kZepK8omUBwl4JR7aqGT8g&adjust_creative=LCdZAbtdm-RwIyToOI_ZaQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_reviews&utm_source=LCdZAbtdm-RwIyToOI_ZaQ
-                            [text] => Had the Moroccan Baked Eggs on Saturday and got food poisoning.  Violently ill and still not well as of this writing.  I did call the restaurant to give a...
-                            [rating] => 1
-                            [user] => stdClass Object
-                                (
-                                    [image_url] => https://s3-media3.fl.yelpcdn.com/photo/l2J5G5Q41hm2aUcCBXd-OA/o.jpg
-                                    [name] => Joan B.
-                                )
-
-                            [time_created] => 2018-02-20 10:45:56
-                        )
-
-                )
-
-            [total] => 4079
-            [possible_languages] => Array
-                (
-                    [0] => fr
-                    [1] => en
-                    [2] => it
-                    [3] => sv
-                    [4] => cs
-                    [5] => ja
-                    [6] => es
-                )
-
-            [biz_id] => gjelina-venice-2
-        )
-
-)
- */
