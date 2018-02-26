@@ -156,9 +156,11 @@ class Tweets extends Feed
             $thumb = "<img src='" . $mediaUrl . ":thumb' class='socialMediaThumb'>";
             $replace = "<a class='imageThumbLink' target='_blank' href='$expandedUrl'>$thumb</a>";
             if ($count == 0) {
-                $replace = "<a class='firstImage' target='_blank' href='$expandedUrl'>$thumb</a>";
+                $replace = "<a class='imageThumbLink firstImage' target='_blank' href='$expandedUrl'>$thumb</a>";
             }
-            $text = str_replace($shortUrl, $replace, $tweetDBObj->text);
+            //$text = str_replace($shortUrl, $replace, $tweetDBObj->text);
+            $text = str_replace($shortUrl, '', $tweetDBObj->text);
+            $text= $replace . $text;
             $count++;
         }
         $tweetDBObj->text = $text;

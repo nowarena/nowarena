@@ -55,7 +55,6 @@ class TwitterController extends Controller
     {
         \DB::enableQueryLog();
         $twitterObj = new Tweets();
-        $r = $twitterObj->getFeed();
         $twitterObj->convertFeedToSocialMedia();
     }
 

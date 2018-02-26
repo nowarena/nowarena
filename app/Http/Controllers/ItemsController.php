@@ -62,18 +62,27 @@ class ItemsController extends Controller
 //        ]);
 
         if ($request->action == 'add') {
+            $request->username = preg_replace("~\?.*~", '', $request->username);
             $arr = [
                 'source_user_id' => $request->source_user_id,
                 'username' => $request->username,
                 'site' => $request->site,
-                'is_active' => $request->is_active,
+                'is_active' => 1,
                 'is_primary' => $request->is_primary,
                 'use_avatar' => $request->use_avatar,
                 'avatar' => $request->avatar
             ];
 
+            $usernameTrunc = str_replace("the-", '', $request->username);
+            $pos = strpos($usernameTrunc, '-');
+            if ($pos !== false) {
+                $usernameTrunc = substr($usernameTrunc, 0, $pos);
+            } else {
+                $usernameTrunc = substr($usernameTrunc, 0, 7);
+            }
+
             SocialMediaAccounts::create($arr);
-            return redirect()->route('items.listsocialmediaaccounts', array('search' => $request->username));
+            return redirect()->route('items.listsocialmediaaccounts', array('search' => $usernameTrunc));
 
         }
 

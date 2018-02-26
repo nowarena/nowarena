@@ -22,9 +22,9 @@
         <div>
         <input type='text' name='source_user_id' placeholder='source_user_id'>
         <input type='text' name='username' placeholder='username'>
-        yelp:<input type='checkbox' name='site' value='yelp.com'> |
-        twitter:<input type='checkbox' name='site' value='twitter.com'> |
-         instagram:<input type='checkbox' name='site' value='instagram.com'>
+        yelp:<input type='radio' name='site' value='yelp.com' checked> |
+        twitter:<input type='radio' name='site' value='twitter.com'> |
+         instagram:<input type='radio' name='site' value='instagram.com'>
         <input type='hidden' name='action' value='add'>
         <input type='hidden' name='search' value='{{$search}}'>
 
@@ -74,7 +74,11 @@
 
 @foreach( $itemsColl as $item )
 
-    <div class='itemTitle'><a href='/items?search=@php echo urlencode($item->title); @endphp'>{{$item->title}}</a></div>
+    <div class='itemTitle'>
+        <a href='/items?search=@php echo urlencode($item->title); @endphp'>{{$item->title}}</a>
+     |  <a target=_blank href='http://www.yelp.com/search?find_desc={{$item->title}}&find_loc=90291'>Yelp</a>
+    </div>
+
     @include('items.partials.socialmediaaccounts', [
         'item' => $item,
         'socialMediaAssocAccountsArr' => $socialMediaAssocAccountsArr,

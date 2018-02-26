@@ -55,7 +55,8 @@
                     <a class="btn btn-danger" href="{{ route('items.delete', $item, ['page' => $itemsColl->currentPage()] )}}" onclick="return confirm('Really delete?');">Delete</a>
 
                 </div>
-                <div class='td'><a href='/items/listsocialmediaaccounts?search={{$item->title}}'>item id {{ $item->id }}</a></div>
+                <div class='td'><a href='/items/listsocialmediaaccounts?search={{$item->title}}'>Social item id {{ $item->id }}</a></div>
+                <div class='td'> | <a target=_blank href='http://www.yelp.com/search?find_desc={{$item->title}}&find_loc=90291'>Yelp</a></div>
             </div>
             <div style='clear:both;'></div>
             <div class='tr'>
