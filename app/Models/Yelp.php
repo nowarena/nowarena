@@ -24,7 +24,7 @@ class Yelp  extends Feed
     {
         $savedArr = [];
         $contactArr = [];
-        $r = SocialMediaAccounts::where('site', '=', 'yelp.com')->get()->toArray();
+        $r = SocialMediaAccounts::where('site', '=', 'yelp.com')->where('is_active', '=', 1)->get()->toArray();
         foreach($r as $arr) {
             $yelpObj = $this->yelpFusion->bizlookup($arr['username'], $this->yelpFusion->getOauthToken(), 0);
             $contactArr[$arr['items_id']] = $yelpObj;
@@ -141,7 +141,9 @@ class Yelp  extends Feed
 
     public function getFeed() {
         $this->yelpFusion = new YelpFusion();
-        $r = SocialMediaAccounts::where('site', '=', 'yelp.com')->get()->toArray();
+        $r = SocialMediaAccounts::where('site', '=', 'yelp.com')
+            ->where('is_active', '=', 1)
+            ->get()->toArray();
         foreach($r as $arr) {
             $yelpFeedObj = $this->yelpFusion->bizlookup($arr['username'], $this->yelpFusion->getOauthToken(), 1);
             $yelpFeedArr[$arr['items_id']] = $yelpFeedObj;

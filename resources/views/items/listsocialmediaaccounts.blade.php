@@ -64,7 +64,7 @@
 <br>
 <div class='itemTitle'> &nbsp; </div>
 <div class='socialSiteName'> </div>
-<div class='accountRemove'>Remove/Add</div>
+<div class='accountRemove'>Delete</div>
 <div class='isActive'>Is Active</div>
 <div class='isPrimary'>Is Primary</div>
 <div class='useAvatar'>Use Avatar</div>

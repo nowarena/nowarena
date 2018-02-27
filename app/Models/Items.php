@@ -25,7 +25,7 @@ class Items extends Model
     public function getItemsColl(Request $request, $perPage = 7)
     {
         $request->validate([
-            'search' => 'nullable|min:3|max:255|regex:/^[a-zA-Z0-9_ -]+$/',
+            'search' => 'nullable|min:3|max:255|regex:/^[a-zA-Z0-9_ ē-]+$/',
             'cats_id' => 'nullable|integer',
             'sort' => 'regex:/^[a-zA-Z0-9_ -]+$/'
         ]);

@@ -28,7 +28,7 @@ if (count($socialMediaAssocAccountsArr)) {
             echo "<div class='socialSiteName'>" . $obj->site . "</div>";
 
             echo "<div class='accountRemove'>";
-            echo "<input type='checkbox' name='remove' value='1'>" . $obj->username;
+            echo "<input type='checkbox' name='action' value='delete' onclick='return confirm(\"Are you sure you want to delete " . $obj->username . " and all of their social media?\");'>" . $obj->username;
             echo "</div>";
 
             echo "<div class='isActive'>";

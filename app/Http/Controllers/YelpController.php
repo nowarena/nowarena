@@ -23,6 +23,8 @@ class YelpController extends Controller
             $r = $yelpObj->convertFeedToSocialMedia();
         } elseif ($request->action == 'contactinfo') {
             $r = $yelpObj->updateContactInfo();
+        }else {
+            exit("not recognizing " . $request->action);
         }
         echo printR($r);
         return;

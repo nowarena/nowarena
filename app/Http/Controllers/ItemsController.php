@@ -61,8 +61,17 @@ class ItemsController extends Controller
 //            'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/'
 //        ]);
 
+        $usernameTrunc = str_replace("the-", '', $request->username);
+        $pos = strpos($usernameTrunc, '-');
+        if ($pos !== false) {
+            $usernameTrunc = substr($usernameTrunc, 0, $pos);
+        } else {
+            $usernameTrunc = substr($usernameTrunc, 0, 7);
+        }
+
         if ($request->action == 'add') {
             $request->username = preg_replace("~\?.*~", '', $request->username);
+            $request->source_user_id = preg_replace("~\?.*~", '', $request->source_user_id);
             $arr = [
                 'source_user_id' => $request->source_user_id,
                 'username' => $request->username,
@@ -73,15 +82,13 @@ class ItemsController extends Controller
                 'avatar' => $request->avatar
             ];
 
-            $usernameTrunc = str_replace("the-", '', $request->username);
-            $pos = strpos($usernameTrunc, '-');
-            if ($pos !== false) {
-                $usernameTrunc = substr($usernameTrunc, 0, $pos);
-            } else {
-                $usernameTrunc = substr($usernameTrunc, 0, 7);
-            }
-
             SocialMediaAccounts::create($arr);
+            return redirect()->route('items.listsocialmediaaccounts', array('search' => $usernameTrunc));
+
+        } else if ($request->action == 'delete') {
+
+            \DB::table('social_media_accounts')->where('items_id', '=', $request->items_id)->delete();
+            \DB::table('social_media')->where('source_user_id', '=', $request->source_user_id)->delete();
             return redirect()->route('items.listsocialmediaaccounts', array('search' => $usernameTrunc));
 
         }
@@ -205,7 +212,7 @@ class ItemsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => "required|min:3|unique:items|max:30|regex:/^[a-zA-Z0-9_ -']+$/",
+            'title' => "required|min:3|unique:items|max:30|regex:/^[a-zA-Z0-9_ 'ē-]+$/",
             'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/'
         ]);
         Items::create(['title' => $request->title,'description' => $request->description]);
@@ -236,7 +243,7 @@ class ItemsController extends Controller
             $uniqueTitleValidation = '|unique:items';
         }
         $request->validate([
-            'title' => "required|min:3|max:30|regex:/^[a-zA-Z0-9_ -']+$/" . $uniqueTitleValidation,
+            'title' => "required|min:3|max:30|regex:/^[a-zA-Z0-9_ 'ē-]+$/" . $uniqueTitleValidation,
             'description' => 'nullable|regex:/^[a-zA-Z0-9_ -]+$/'
         ]);
         $items->title = $request->title;
@@ -254,6 +261,7 @@ class ItemsController extends Controller
             $arr = ['page' => $page];
         }
         $arr['cats_id'] = $searchCatsId;
+        $arr['search'] = $request->title;
 
         // update categories
         $request->validate([
