@@ -176,8 +176,11 @@ class Tweets extends Feed
         }
         foreach($urlsArr as $short => $full) {
             $domain = parse_url($full, PHP_URL_HOST);
+            if ($domain == 'twitter.com') {
+                continue;
+            }
             $domain = str_replace("www.", "", $domain);
-            $obj->text = str_replace($short, "<a target='_blank' href='$full'>$domain</a>", $obj->text);
+            $obj->text = str_replace($short, "<a class='siteLink' target='_blank' href='$full'>$domain</a>", $obj->text);
         }
         return $obj;
 
