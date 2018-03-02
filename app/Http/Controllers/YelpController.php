@@ -60,7 +60,8 @@ class YelpController extends Controller
      */
     public function show($id)
     {
-        //
+        $yelpObj = new Yelp();
+        $yelpObj->convertFeedToSocialMedia();
     }
 
     /**

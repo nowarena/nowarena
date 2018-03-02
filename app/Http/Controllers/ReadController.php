@@ -80,9 +80,10 @@ foreach($catsIdArr as $catsId) {
                 $filename = "/var/www/html/json/" . $cat . ".json";
                 echo $filename."\n";
                 echo '<pre>';
-                echo json_encode($itemsArr, JSON_PRETTY_PRINT);
+                echo htmlentities(json_encode($itemsArr, JSON_PRETTY_PRINT));
                 echo '</pre>';
                 file_put_contents($filename, $itemsJson);
+                sleep(1);//allow watchify to see change for all
 
             } else {
                 // no children of cats_id

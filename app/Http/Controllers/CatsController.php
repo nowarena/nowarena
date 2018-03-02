@@ -23,6 +23,7 @@ class CatsController extends Controller
      */
     public function index(Request $request)
     {
+        
         DB::enableQueryLog();
         $request->validate([
             'search' => 'nullable|min:3|max:255|regex:/^[a-zA-Z0-9_ -]+$/'

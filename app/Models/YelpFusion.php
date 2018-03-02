@@ -20,8 +20,9 @@ class YelpFusion extends \Neighborhoods\YelpFusion\Yelp
 
         parent::__construct();
         $providerKey = Config::get('services.yelp');
-        $oauthTokenData = $this->getBearerTokenObject($providerKey['client_id'], $providerKey['client_secret']);
-        $this->oauthToken = $oauthTokenData->access_token;
+        //$oauthTokenData = $this->getBearerTokenObject($providerKey['client_id'], $providerKey['client_secret']);
+        //$this->oauthToken = $oauthTokenData->access_token;
+        $this->oauthToken = $providerKey['api_key'];
     }
 
     /**

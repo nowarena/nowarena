@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use Laravel\Socialite\Facades\Socialite;
+use App\Models\Instagram;
+use MetzWeb\Instagram\Instagram as InstagramApi;
 use Illuminate\Support\Facades\Config;
 
 
@@ -18,16 +18,20 @@ class InstagramController extends Controller
     public function index(Request $request)
     {
 
-        exit("gen access token");
-        //
-        // http://dmolsen.com/2013/04/05/generating-access-tokens-for-instagram/
-        //
+       exit("gen access token. it should already be in .env");
+
+
+//    $instagram = new Instagram(array(
+//        'apiKey'      => '2488647005a54267a3fb19dc243e3efa',
+//        'apiSecret'   => '37f827c4ad214e23a58d54e530781921',
+//        'apiCallback' => ''//YOUR_APP_CALLBACK
+//    ));
+//1536088989.2488647.59a123b109674e81af1f0525bce5bdd4
 
         $providerKey = Config::get('services.instagram');
 
         //print_r($providerKey);exit;
-        if (empty($request->code)) {
-
+        if (0 && empty($request->code)) {
 
             $url = "https://api.instagram.com/oauth/authorize/?client_id=" . $providerKey['client_id'];
             $url.="&redirect_uri=" . $providerKey['redirect'] . "&response_type=code";
@@ -35,7 +39,7 @@ class InstagramController extends Controller
             //$url.="&scope=basic+public_content+follower_list+comments+relationships+likes";
             echo "<a href=$url>$url</a>";
         } else {
-
+$code='226fa5e5aa8049eb81e93ac512e48d45';
             //echo "code:" . $request->code;
             //curl -F 'client_id=[clientID]' -F 'client_secret=[clientSecret]' -F 'grant_type=authorization_code'
             // -F 'redirect_uri=[redirectURI]' -F 'code=[code]' https://api.instagram.com/oauth/access_token
@@ -46,8 +50,8 @@ class InstagramController extends Controller
                     'client_id' => $providerKey['client_id'],
                     'client_secret' => $providerKey['client_secret'],
                     'grant_type' => 'authorization_code',
-                    'redirect_uri' => $redirectURI,
-                    'code' => $request->code
+                    'redirect_uri' => $providerKey['redirect'],
+                    'code' => $code
                 ]
             ]);
 
@@ -57,7 +61,6 @@ class InstagramController extends Controller
             echo printR($obj);
             echo "<br>access_token:<br>";
             echo $obj->access_token;
-
 
         }
 
@@ -75,10 +78,10 @@ class InstagramController extends Controller
      */
     public function create()
     {
-        exit('exploring api');
+        //exit('exploring api');
         $providerKey = Config::get('services.instagram');
         echo printR($providerKey);
-        $instaUrl = 'https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' . $providerKey['access_token'];
+        $instaUrl = 'https://api.instagram.com/v1/tags/nofilter/media/recent?min_tag_id=0&max_tag_id=100000000&access_token=' . $providerKey['access_token'];
         echo "<a target=_blank href='$instaUrl'>insta</a>";
 
         echo "<br>";
@@ -121,7 +124,19 @@ class InstagramController extends Controller
      */
     public function show($id)
     {
+        $providerKey = Config::get('services.instagram');
+        $instagram = new InstagramApi(array(
+            'apiKey'      => $providerKey['client_id'],
+            'apiSecret'   => $providerKey['client_secret'],
+            'apiCallback' => ''//YOUR_APP_CALLBACK
+        ));
+print_r($instagram->getUserFeed(1000));
+        //if you only want to access public data:
+        //new Instagram('YOUR_APP_KEY');
 
+
+
+        exit('hi');
     }
 
     /**

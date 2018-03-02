@@ -176,7 +176,9 @@ class Tweets extends Feed
         }
         foreach($urlsArr as $short => $full) {
             $domain = parse_url($full, PHP_URL_HOST);
+            // the link to the status is in elsewhere, no need to display the text link
             if ($domain == 'twitter.com') {
+                $obj->text = str_replace($short, "", $obj->text);
                 continue;
             }
             $domain = str_replace("www.", "", $domain);
