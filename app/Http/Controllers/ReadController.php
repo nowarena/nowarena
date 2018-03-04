@@ -77,7 +77,7 @@ foreach($catsIdArr as $catsId) {
                 error_reporting(E_ALL);
 
                 $itemsJson = json_encode($itemsArr);
-                $filename = "/var/www/html/json/" . $cat . ".json";
+                $filename = "/home/matt/PhpstormProjects/nowarena/public/reactswipe/json/" . $cat . ".json";
                 echo $filename."\n";
                 echo '<pre>';
                 echo htmlentities(json_encode($itemsArr, JSON_PRETTY_PRINT));
