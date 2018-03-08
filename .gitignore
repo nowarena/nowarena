@@ -25,9 +25,11 @@ Thumbs.db
 
 ### DIFFERENT TYPE OF MASTER CONFIGS ###
 .env
+.env.prod
 composer.lock
 
 ### ASSET EXCLUSIONS ###
+/node_modules*
 /node_modules
 /public/storage
 /storage/*.key

@@ -77,13 +77,13 @@ foreach($catsIdArr as $catsId) {
                 error_reporting(E_ALL);
 
                 $itemsJson = json_encode($itemsArr);
-                $filename = "/home/matt/PhpstormProjects/nowarena/public/reactswipe/json/" . $cat . ".json";
+                $filename = "/home/matt/PhpstormProjects/nowarena/public/reactswipe/abbotkinneybl/json/" . $cat . ".json";
                 echo $filename."\n";
                 echo '<pre>';
                 echo htmlentities(json_encode($itemsArr, JSON_PRETTY_PRINT));
                 echo '</pre>';
                 file_put_contents($filename, $itemsJson);
-                sleep(1);//allow watchify to see change for all
+                //sleep(1);//allow watchify to see change for all
 
             } else {
                 // no children of cats_id

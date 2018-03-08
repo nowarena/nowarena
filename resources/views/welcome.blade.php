@@ -50,15 +50,11 @@
 <!--SERVICES-->
 <!--<div id="services"></div>-->
 <!--<div style='clear:both;'></div>-->
-@php
-$r=rand(1,111111111);
-$r=date("H");
-@endphp
-<script src="./reactswipe/bundle.min.js?r={{$r}}"></script>
+<script src="./reactswipe/abbotkinneybl/bundle.min.js"></script>
 
 <!--
 
- todo
+todo
 
 follow all biz on twitter
 
@@ -70,12 +66,12 @@ Add contact info social media links: twitter, insta, fb, yelp, website
 
 Add opentable
 
-cronjob generating json
-
-setup on amazon
+setup laravel and crons on godaddy
 
 make appear to google
 
+make multi-site - multi dbs and domains
+setup on amazon
 
 -->
 
