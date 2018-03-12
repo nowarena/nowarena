@@ -8,6 +8,11 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, del, dfn, em, 
     background: transparent;
 }
 
+body {
+    max-width:800px;
+    margin:0px auto;
+}
+
 .titleCont {
     border-radius:15px;
     color: #f3f3f3;
@@ -361,6 +366,37 @@ h2 {
     margin-top:4px;
 }
 
+.listLinks{
+    list-style-type: none;
+    text-align:center;
+    margin-bottom:100px;
+    margin-top:20px;
+    cursor:pointer;
+}
+
+.listLinkItem {
+    display:inline;
+    background-color: #cccccc;
+    width:100%;
+
+}
+.linkListButton {
+    font-size:20px;
+    font-weight:bold;
+    color: #f3f3f3;
+    border-radius:10px;
+    text-align:center;
+    background-color: #337ab7;
+    padding: 8px;
+    border: 2px solid #f3f3f3;
+    text-decoration:none;
+
+}
+
+.footerLinks {
+    display:inline;
+    text-align:left;
+}
 
 @media screen and (max-width:800px) {
     .navBtnCont {
@@ -395,7 +431,3 @@ h2 {
     }
 }
 
-body {
- max-width:800px;
- margin:0px auto;
-}

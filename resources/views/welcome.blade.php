@@ -1,6 +1,14 @@
 <!doctype html>
 <html>
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136986-16"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-136986-16');
+    </script>
     <title>AbbotKinneyBL.com - Abbot Kinney Blvd. news and media</title>
 
     <meta charset="utf-8" />
@@ -8,7 +16,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
-    <link rel='stylesheet' href='./reactswipe/index.css' />
+    <link rel='stylesheet' href='./reactswipe/abbotkinneybl/index.css' />
 
 </head>
 <body>
@@ -66,14 +74,27 @@ Add contact info social media links: twitter, insta, fb, yelp, website
 
 Add opentable
 
-setup laravel and crons on godaddy
 
-make appear to google
+
+
 
 make multi-site - multi dbs and domains
 setup on amazon
+setup crons
+make appear to google - node
+
 
 -->
 
+<div class='footerLinks'>
+<h3>Abbot Kinney Bl on:</h3>
+<ul class='listLinks'>
+    <li class='listLinkItem'><a target='_blank' class='listLinkhref linkListButton' href='https://abbotkinneyblvd.tumblr.com/'>Tumblr</a></li>
+    <li class='listLinkItem'><a target='_blank' class='listLinkhref linkListButton' href='https://www.reddit.com/r/AbbotKinneyBlvd/'>Subreddit</a></li>
+    <li class='listLinkItem'><a target='_blank' class='listLinkhref linkListButton' href='https://www.instagram.com/abbotkinneybl/'>Instagram</a></li>
+    <li class='listLinkItem'><a target='_blank' class='listLinkhref linkListButton' href='https://twitter.com/abbotkinneybl'>Twitter</a></li>
+</ul>
+<div style='cleart:both;'></div>
+</div>
 </body>
 </html>
