@@ -60,31 +60,6 @@
 <!--<div style='clear:both;'></div>-->
 <script src="./reactswipe/abbotkinneybl/bundle.min.js"></script>
 
-<!--
-
-todo
-
-follow all biz on twitter
-
-
-what to do about overflow
-When viewing item's feed only (not all categories), keep item header locked and not slide with rest of body
-
-Add contact info social media links: twitter, insta, fb, yelp, website
-
-Add opentable
-
-
-
-
-
-make multi-site - multi dbs and domains
-setup on amazon
-setup crons
-make appear to google - node
-
-
--->
 
 <div class='footerLinks'>
 <h3>Abbot Kinney Bl on:</h3>
