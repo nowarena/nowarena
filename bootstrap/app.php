@@ -21,6 +21,19 @@ $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
 );
 
+
+/*
+|--------------------------------------------------------------------------
+| Multisite setup https://stackoverflow.com/a/34226844/779803
+|--------------------------------------------------------------------------
+| own env directory for separate env files
+| separate files for each domain (see htaccess)
+*/
+//$app->useEnvironmentPath( realpath(__DIR__ . '/../env/') );
+//$app->loadEnvironmentFrom( getenv('APP_DOMAIN') . '.env' );
+
+require('env.php');
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
@@ -88,6 +101,9 @@ $app->configureMonologUsing(function ($monolog) {
     $alertStreamHandler->setFormatter($formatter);
     $emergencyStreamHandler->setFormatter($formatter);
 });
+
+
+
 
 /*
 |--------------------------------------------------------------------------
