@@ -370,16 +370,20 @@ h2 {
     list-style-type: none;
     text-align:center;
     margin-bottom:100px;
-    margin-top:20px;
     cursor:pointer;
 }
 
 .listLinkItem {
-    display:inline;
+    float:left;
     background-color: #cccccc;
-    width:100%;
-
+    float: left;
+    margin: 25px 0px 0px 10px;
 }
+
+.footerLinks H3 {
+    padding-left:10px;
+}
+
 .linkListButton {
     font-size:20px;
     font-weight:bold;
