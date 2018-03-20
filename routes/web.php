@@ -14,7 +14,19 @@
 */
 
 // Homepage Route
-Route::get('/', 'WelcomeController@welcome')->name('welcome');
+//Route::get('/', 'WelcomeController@welcome')->name('welcome');
+
+Route::domain('{subdomain}.nowarena.com')->group(function () {
+    if (!isset($_SERVER['HTTP_HOST'])) {
+        exit("HTTP_HOST not set");
+    }
+    $arr = explode(".", $_SERVER['HTTP_HOST']);
+    if (count($arr) < 3) {
+        exit("subdomain not set");
+    }
+    $subdomain = $arr[0];
+    Route::get('/', 'WelcomeController@' . $subdomain)->name($subdomain);
+});
 
 // Authentication Routes
 Auth::routes();

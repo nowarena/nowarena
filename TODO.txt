@@ -20,4 +20,5 @@ make multi-site - multi dbs and domains
         php artisan migrate:install -h
         Usage:
         migrate:install [--database[="..."]]
-
+        HTTP_HOST=abbotkinneybl.now php artisan migrate:migrate
+    - create guide - 1. add twitter friends 2. call getfriends? 3. categorize friends 4. call gettweets

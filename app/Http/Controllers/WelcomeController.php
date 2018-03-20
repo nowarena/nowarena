@@ -15,4 +15,14 @@ class WelcomeController extends Controller
 
         return view('welcome');
     }
+    public function nbablvd()
+    {
+
+        return view('nbablvd');
+    }
+    public function abbotkinneybl()
+    {
+
+        return view('abbotkinneybl');
+    }
 }

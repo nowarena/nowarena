@@ -371,17 +371,17 @@ h2 {
     text-align:center;
     margin-bottom:100px;
     cursor:pointer;
-    width:100%;
 }
 
 .listLinkItem {
-    /*background-color: #cccccc;*/
+    float:left;
+    background-color: #cccccc;
+    float: left;
     margin: 25px 0px 0px 10px;
-    width:100%;
 }
 
 .footerLinks H3 {
-    padding-left:20px;
+    padding-left:10px;
 }
 
 .linkListButton {
@@ -394,11 +394,13 @@ h2 {
     padding: 8px;
     border: 2px solid #f3f3f3;
     text-decoration:none;
-    width:85%;
-    margin:10px auto;
-    display:block;
+
 }
 
+.footerLinks {
+    display:inline;
+    text-align:left;
+}
 
 @media screen and (max-width:800px) {
     .navBtnCont {
