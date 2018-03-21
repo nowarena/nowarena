@@ -49,7 +49,7 @@ class Tweets extends Feed
             }
         } while($r->next_cursor_str > 0);
 
-        $r = dd( \DB::getQueryLog() );
+        //$r = dd( \DB::getQueryLog() );
     }
 
     public function getFeed()

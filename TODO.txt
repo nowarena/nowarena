@@ -21,4 +21,16 @@ make multi-site - multi dbs and domains
         Usage:
         migrate:install [--database[="..."]]
         HTTP_HOST=abbotkinneybl.now php artisan migrate:migrate
-    - create guide - 1. add twitter friends 2. call getfriends? 3. categorize friends 4. call gettweets
+
+
+
+    -  guide
+
+    Add urls to Valid OAuth Redirect URIs in facebook developer Products > Facebook Login > Settings
+    HTTP_HOST=nbablvd.nowarean.com php artisan migrate:refresh --seed
+
+    1. add twitter friends
+    2. call getfriends?
+    3. categorize friends
+    4. call gettweets
+

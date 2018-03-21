@@ -83,3 +83,28 @@
     float:left;
 }
 
+.catsHierarchyOverlay {
+    background-color:#ffffff;
+    border:1px solid black;
+    position:absolute;
+    z-index:2;
+    top:60px;
+    right:50px;
+}
+
+.catsHierarchyOverlay .ulAdmin {
+    display:none;
+}
+
+#catsHierarchyOverlayToggle {
+    display:inline-block;
+    float:right;
+    padding:4px;
+    border:1px solid black;
+    margin:2px;
+    background-color:#cccccc;
+    font-weight:bold;
+    color:#000000;
+    cursor:pointer;
+
+}

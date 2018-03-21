@@ -18,7 +18,7 @@
         <div class="sectionForm">
         <input type="text" size="30" name="title" placeholder="Title">
         <input type="text" size="60" name="description" placeholder="Description">
-        Parent Only:<input type="checkbox" name="parent_only" value="1">
+        <label>Parent Only:<input type="checkbox" name="parent_only" value="1"></label>
         <input class="btn btn-primary" type="submit" value="Add Category">
         </div>
 
@@ -84,7 +84,9 @@
 
     <div style="clear:both;"></div>
 
-    <div style='background-color:#ffffff;float:right;border:1px solid black;position:absolute;z-index:2;top:60px;right:50px;'>
+    <div class='catsHierarchyOverlay'>
+            <div id='catsHierarchyOverlayToggle'>Toggle Category Hierarchy</div>
+            <div style='clear:both;'></div>
             @include('layouts.partials.catshierarchy', [
                 'parentChildArr' => $parentChildArr,
                 'catsCollArr' => $catsCollArr,
@@ -108,14 +110,14 @@
                     <input type="text" size="60" name="description" value="{{ $cat->description }}">
                 </td>
                 <td>
-                Parent Only: <input type='checkbox' name='parent_only' value='1'
+                <label>Parent Only: <input type='checkbox' name='parent_only' value='1'
                 @foreach( $parentChildHierArr as $key => $arr )
                     @if ($arr['child_id'] == $cat->id)
                          checked
                          break
                     @endif
                 @endforeach
-                >
+                ></label>
                 </td>
                 <td>
                     <button class="btn btn-primary" name="edit">Submit Edit</button>

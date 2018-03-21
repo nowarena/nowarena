@@ -9,6 +9,11 @@
 <script>
 
     $(document).ready(function() {
+
+      $("#catsHierarchyOverlayToggle").click(function() {
+        $(".catsHierarchyOverlay .ulAdmin").toggle();
+      });
+
         //
         // UPDATE NAV LINKS ACTIVE STATUS
         //
