@@ -179,6 +179,8 @@ Route::resource('instagram','InstagramController');
 Route::get('/twitter/getfeed', 'TwitterController@create')->name('twitter.create');
 Route::get('/twitter/store', 'TwitterController@store')->name('twitter.store');
 Route::get('/twitter/getfriends', 'TwitterController@show')->name('twitter.show');
+Route::get('/twitter/index', 'TwitterController@index')->name('twitter.index');
+Route::get('/twitter/getmemberlists', 'TwitterController@getmemberlists')->name('twitter.getmemberlists');
 
 Route::get("read", "ReadController");
 

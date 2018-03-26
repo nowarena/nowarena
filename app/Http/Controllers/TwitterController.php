@@ -14,12 +14,11 @@ class TwitterController extends Controller
      */
     public function index()
     {
-
-        return;
+        exit('comment out this exit');
         // Quick setup
         // After 'friends' or people your twitter account follows have been saved via /twitter/getfriends...
         // Save all twitter users in items table giving items.title the value of username from social_media_accounts
-        $q="INSERT INTO items (title) SELECT username FROM social_media_accounts";
+        $q="INSERT IGNORE INTO items (title) SELECT username FROM social_media_accounts";
         $r = \DB::select($q);
         // Update social_media_accounts with items_id from items...
         $q="select items.id, username from items inner join social_media_accounts sma on items.title=sma.username";
@@ -27,7 +26,19 @@ class TwitterController extends Controller
         foreach($r as $obj) {
             $q = "update social_media_accounts set items_id = " . $obj->id . " WHERE username='" . $obj->username . "'";
             \DB::select($q);
+            echo $q . "<br>";
         }
+        $q = "UPDATE items SET created_at = NOW(), updated_at = NOW() WHERE created_at IS NULL";
+        \DB::select($q);
+    }
+
+    public function getMemberLists()
+    {
+        $twitterObj = new Tweets();
+        $r = $twitterObj->getListMembers();
+
+
+
     }
 
     /**

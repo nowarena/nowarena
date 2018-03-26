@@ -13,6 +13,27 @@ class Tweets extends Feed
 
     protected $friendsArr = [];
 
+    public $screenName = '';
+
+
+
+    public function getListMembers()
+    {
+        $paramArr = [
+            'slug' => 'players',
+            'skip_status' => true,
+            'include_user_entities' => false,
+            'cursor' => -1,
+            'count' => 200,
+            'owner_screen_name' => 'celtics',
+            'owner_id' => 18139461
+        ];
+
+        $r = \Twitter::getListMembers($paramArr);
+        print_r($r);
+
+    }
+
     public function saveFriends()
     {
         $objArr = [];

@@ -2027,6 +2027,11 @@ pre code {
   }
 }
 
+@media (min-width: 1400px) {
+    .container {
+        width: 1300px;
+    }
+}
 .container-fluid {
   margin-right: auto;
   margin-left: auto;

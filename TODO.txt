@@ -22,6 +22,8 @@ make multi-site - multi dbs and domains
         migrate:install [--database[="..."]]
         HTTP_HOST=abbotkinneybl.now php artisan migrate:migrate
 
+Associate user account with subdomain (eg. abbotkinneybl twitter user with abbotkinneybl.com)
+Add 'team' account flag. eg. 'celtics' twitter account is the team account for celtics
 
 
     -  guide
@@ -29,8 +31,10 @@ make multi-site - multi dbs and domains
     Add urls to Valid OAuth Redirect URIs in facebook developer Products > Facebook Login > Settings
     HTTP_HOST=nbablvd.nowarean.com php artisan migrate:refresh --seed
 
-    1. add twitter friends
-    2. call getfriends?
+    - add twitter friends on twitter
+    - add them to social_media_accounts table http://nbablvd.nowarena.com/twitter/getfriends
+    - call /twitter/index to add them to items and connect on items.id to social_media_accounts.items_id and
+        giving items.title the value of username from social_media_accounts
     3. categorize friends
     4. call gettweets
 
